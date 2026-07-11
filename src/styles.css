@@ -148,6 +148,121 @@
   letter-spacing: -0.02em;
 }
 
+@utility chat-prose {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--color-foreground);
+
+  & > * + * { margin-top: 0.85em; }
+
+  & h1, & h2, & h3, & h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.015em;
+    color: var(--color-foreground);
+    margin-top: 1.4em;
+    margin-bottom: 0.4em;
+    line-height: 1.25;
+  }
+  & h1 { font-size: 1.5rem; }
+  & h2 { font-size: 1.25rem; }
+  & h3 { font-size: 1.08rem; font-weight: 600; }
+  & h4 { font-size: 1rem; font-weight: 600; }
+
+  & p { margin: 0; }
+
+  & strong { color: var(--color-foreground); font-weight: 650; }
+  & em { color: color-mix(in oklab, var(--color-foreground) 88%, var(--brand)); }
+
+  & a {
+    color: var(--brand);
+    text-decoration: underline;
+    text-decoration-color: color-mix(in oklab, var(--brand) 40%, transparent);
+    text-underline-offset: 3px;
+    transition: text-decoration-color 0.15s ease;
+  }
+  & a:hover { text-decoration-color: var(--brand); }
+
+  & ul, & ol { padding-left: 1.35rem; margin: 0.4em 0; }
+  & ul { list-style: disc; }
+  & ol { list-style: decimal; }
+  & li { margin: 0.28em 0; padding-left: 0.15rem; }
+  & li::marker { color: color-mix(in oklab, var(--brand) 70%, var(--muted-foreground)); }
+  & li > p { display: inline; }
+
+  & blockquote {
+    border-left: 3px solid color-mix(in oklab, var(--brand) 60%, transparent);
+    padding: 0.15em 0 0.15em 0.9rem;
+    color: var(--color-muted-foreground);
+    font-style: italic;
+    background: color-mix(in oklab, var(--brand) 4%, transparent);
+    border-radius: 0 0.25rem 0.25rem 0;
+  }
+
+  & hr {
+    border: none;
+    border-top: 1px dashed color-mix(in oklab, var(--color-border) 100%, transparent);
+    margin: 1.2em 0;
+  }
+
+  & code {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 0.86em;
+    padding: 0.14em 0.42em;
+    border-radius: 0.35rem;
+    background: color-mix(in oklab, var(--brand) 8%, var(--muted));
+    color: color-mix(in oklab, var(--foreground) 90%, var(--brand));
+    border: 1px solid color-mix(in oklab, var(--brand) 12%, var(--border));
+  }
+
+  & pre {
+    background: color-mix(in oklab, var(--foreground) 92%, var(--brand));
+    color: color-mix(in oklab, var(--background) 92%, transparent);
+    border-radius: 0.75rem;
+    padding: 0.95rem 1.05rem;
+    overflow-x: auto;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    box-shadow: 0 6px 20px -12px color-mix(in oklab, var(--brand) 40%, transparent);
+  }
+  & pre code {
+    background: transparent;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  & table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9em;
+    border: 1px solid var(--color-border);
+    border-radius: 0.6rem;
+    overflow: hidden;
+  }
+  & thead { background: color-mix(in oklab, var(--brand) 8%, var(--muted)); }
+  & th, & td {
+    padding: 0.55rem 0.75rem;
+    border-bottom: 1px solid var(--color-border);
+    text-align: left;
+  }
+  & tbody tr:last-child td { border-bottom: none; }
+  & tbody tr:nth-child(even) { background: color-mix(in oklab, var(--muted) 45%, transparent); }
+
+  & img { border-radius: 0.6rem; max-width: 100%; }
+
+  /* KaTeX math */
+  & .katex { font-size: 1.02em; }
+  & .katex-display {
+    margin: 0.6em 0;
+    padding: 0.6rem 0.4rem;
+    overflow-x: auto;
+    background: color-mix(in oklab, var(--brand) 5%, var(--muted));
+    border-radius: 0.6rem;
+    border: 1px solid color-mix(in oklab, var(--brand) 10%, var(--border));
+  }
+}
+
 @layer base {
   * {
     border-color: var(--color-border);
