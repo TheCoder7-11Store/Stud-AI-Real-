@@ -105,9 +105,12 @@ export function ChatWindow({
         <ConversationScrollButton />
       </Conversation>
 
-      <div className="border-t bg-background/80 backdrop-blur">
+      <div className="border-t border-border/60 bg-background/70 backdrop-blur-xl">
         <div className="mx-auto w-full max-w-3xl p-3 sm:p-4">
-          <PromptInput onSubmit={handleSubmit}>
+          <PromptInput
+            onSubmit={handleSubmit}
+            className="rounded-2xl border border-border/70 bg-card/80 shadow-lg shadow-brand/5 backdrop-blur"
+          >
             <PromptInputTextarea
               placeholder="Ask Stud AI anything — a concept, a practice question, a study plan…"
               autoFocus
@@ -116,6 +119,7 @@ export function ChatWindow({
               <PromptInputSubmit
                 status={status}
                 onClick={isLoading ? () => stop() : undefined}
+                className="bg-gradient-to-br from-brand to-accent-warm text-brand-foreground shadow-md hover:opacity-90"
               />
             </PromptInputFooter>
           </PromptInput>
