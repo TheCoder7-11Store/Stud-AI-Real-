@@ -67,29 +67,40 @@ export function AppShell({ children }: { children: ReactNode }) {
   }, [activeId]);
 
   return (
-    <div className="flex h-screen w-full bg-background text-foreground">
+    <div className="flex h-screen w-full text-foreground">
       {/* Sidebar */}
       <aside
         className={cn(
-          "fixed inset-y-0 left-0 z-30 flex w-72 flex-col border-r bg-sidebar text-sidebar-foreground transition-transform sm:static sm:translate-x-0",
+          "fixed inset-y-0 left-0 z-30 flex w-72 flex-col border-r border-sidebar-border/70 bg-sidebar/80 text-sidebar-foreground backdrop-blur-xl transition-transform sm:static sm:translate-x-0",
           sidebarOpen ? "translate-x-0" : "-translate-x-full sm:translate-x-0",
         )}
       >
-        <div className="flex items-center gap-2 px-4 pb-2 pt-4">
-          <img src={logo} alt="" width={28} height={28} className="rounded-md" />
-          <span className="text-sm font-semibold tracking-tight">Stud AI</span>
+        <div className="flex items-center gap-2.5 px-4 pb-3 pt-5">
+          <div className="relative">
+            <div className="absolute inset-0 -z-10 rounded-xl bg-gradient-to-br from-brand/50 to-accent-warm/50 blur-md" />
+            <img src={logo} alt="" width={30} height={30} className="rounded-xl border border-border/40" />
+          </div>
+          <span className="font-display text-lg font-semibold tracking-tight">
+            Stud <span className="text-gradient-brand">AI</span>
+          </span>
         </div>
 
-        <div className="px-3 pt-3">
+        <div className="px-3 pt-2">
           <Link to="/">
-            <Button variant="secondary" className="w-full justify-start gap-2">
+            <Button
+              variant="secondary"
+              className="w-full justify-start gap-2 border border-border/60 bg-card/70 shadow-sm hover:bg-card"
+            >
               <MessageSquarePlus className="h-4 w-4" />
               New chat
             </Button>
           </Link>
         </div>
 
-        <div className="mt-4 flex-1 overflow-y-auto px-2 pb-2">
+        <div className="mt-5 flex-1 overflow-y-auto px-2 pb-2">
+          <p className="px-3 pb-2 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/70">
+            Recent chats
+          </p>
           {!user && !hydrated ? null : threads.length === 0 ? (
             <p className="px-3 py-6 text-xs text-muted-foreground">
               No chats yet. Start a conversation below.
@@ -100,12 +111,15 @@ export function AppShell({ children }: { children: ReactNode }) {
                 <li key={t.id}>
                   <div
                     className={cn(
-                      "group flex items-center rounded-md text-sm transition-colors",
+                      "group relative flex items-center rounded-lg text-sm transition-colors",
                       activeId === t.id
-                        ? "bg-sidebar-accent text-sidebar-accent-foreground"
+                        ? "bg-sidebar-accent text-sidebar-accent-foreground shadow-sm"
                         : "hover:bg-sidebar-accent/60",
                     )}
                   >
+                    {activeId === t.id && (
+                      <span className="absolute left-0 top-1/2 h-4 w-0.5 -translate-y-1/2 rounded-r-full bg-gradient-to-b from-brand to-accent-warm" />
+                    )}
                     <Link
                       to="/chat/$threadId"
                       params={{ threadId: t.id }}
@@ -128,10 +142,10 @@ export function AppShell({ children }: { children: ReactNode }) {
           )}
         </div>
 
-        <div className="border-t p-3">
+        <div className="border-t border-sidebar-border/70 p-3">
           {loading ? null : user ? (
-            <div className="flex items-center gap-2">
-              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-primary">
+            <div className="flex items-center gap-2 rounded-xl border border-border/60 bg-card/60 p-2 shadow-sm">
+              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-brand to-accent-warm text-brand-foreground shadow-inner">
                 <User className="h-4 w-4" />
               </div>
               <div className="min-w-0 flex-1">
@@ -144,7 +158,10 @@ export function AppShell({ children }: { children: ReactNode }) {
             </div>
           ) : (
             <Link to="/auth" className="block">
-              <Button variant="outline" className="w-full justify-start gap-2">
+              <Button
+                variant="outline"
+                className="w-full justify-start gap-2 border-border/70 bg-card/60 shadow-sm hover:bg-card"
+              >
                 <LogIn className="h-4 w-4" />
                 Sign in to sync
               </Button>
@@ -162,7 +179,7 @@ export function AppShell({ children }: { children: ReactNode }) {
 
       {/* Main */}
       <main className="flex min-w-0 flex-1 flex-col">
-        <header className="flex items-center justify-between border-b px-4 py-2 sm:hidden">
+        <header className="flex items-center justify-between border-b border-border/60 bg-background/70 px-4 py-2 backdrop-blur sm:hidden">
           <button
             className="rounded-md p-2 hover:bg-accent"
             onClick={() => setSidebarOpen((s) => !s)}
@@ -176,7 +193,9 @@ export function AppShell({ children }: { children: ReactNode }) {
           </button>
           <div className="flex items-center gap-2">
             <img src={logo} alt="" width={22} height={22} className="rounded" />
-            <span className="text-sm font-semibold">Stud AI</span>
+            <span className="font-display text-base font-semibold">
+              Stud <span className="text-gradient-brand">AI</span>
+            </span>
           </div>
           <div className="w-9" />
         </header>
