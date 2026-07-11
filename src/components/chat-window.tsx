@@ -73,19 +73,35 @@ export function ChatWindow({
   return (
     <div className="flex h-full min-h-0 flex-col">
       <Conversation className="flex-1">
-        <ConversationContent className="mx-auto w-full max-w-3xl">
+        <ConversationContent className="mx-auto w-full max-w-3xl space-y-6 px-3 py-6 sm:px-4">
           {isEmpty ? (
             <EmptyState onPick={(p) => sendMessage({ text: p })} prompts={quickPrompts} />
           ) : (
             messages.map((m) => (
-              <Message key={m.id} from={m.role}>
-                <MessageContent>
+              <Message key={m.id} from={m.role} className="gap-1.5">
+                {m.role === "assistant" && (
+                  <div className="mb-1 flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
+                    <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-gradient-to-br from-brand to-accent-warm text-[10px] font-bold text-brand-foreground shadow-sm">
+                      S
+                    </span>
+                    Stud AI
+                  </div>
+                )}
+                <MessageContent
+                  className={
+                    m.role === "user"
+                      ? "group-[.is-user]:rounded-2xl group-[.is-user]:rounded-tr-md group-[.is-user]:bg-gradient-to-br group-[.is-user]:from-brand group-[.is-user]:to-[color-mix(in_oklab,var(--brand)_78%,var(--accent-warm))] group-[.is-user]:px-4 group-[.is-user]:py-3 group-[.is-user]:text-brand-foreground group-[.is-user]:shadow-md group-[.is-user]:shadow-brand/20 group-[.is-user]:ring-1 group-[.is-user]:ring-brand/20"
+                      : "leading-relaxed"
+                  }
+                >
                   {m.parts.map((part, i) => {
                     if (part.type === "text") {
                       return m.role === "assistant" ? (
-                        <MessageResponse key={i}>{part.text}</MessageResponse>
+                        <MessageResponse key={i} className="chat-prose">
+                          {part.text}
+                        </MessageResponse>
                       ) : (
-                        <div key={i} className="whitespace-pre-wrap">
+                        <div key={i} className="whitespace-pre-wrap leading-relaxed">
                           {part.text}
                         </div>
                       );
@@ -97,7 +113,10 @@ export function ChatWindow({
             ))
           )}
           {status === "submitted" && (
-            <div className="pl-1 pt-2 text-sm">
+            <div className="flex items-center gap-2 pl-1 pt-2 text-sm">
+              <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-gradient-to-br from-brand to-accent-warm text-[10px] font-bold text-brand-foreground shadow-sm">
+                S
+              </span>
               <Shimmer>Thinking…</Shimmer>
             </div>
           )}
