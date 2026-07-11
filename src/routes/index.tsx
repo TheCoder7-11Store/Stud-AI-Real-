@@ -1,24 +1,45 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useNavigate } from "@tanstack/react-router";
+import { useQueryClient } from "@tanstack/react-query";
+import { AppShell } from "@/components/app-shell";
+import { ChatWindow } from "@/components/chat-window";
+import { useAuth } from "@/lib/use-auth";
+import { createLocalThread, updateLocalThread } from "@/lib/threads-store";
+import { createThread, saveMessages } from "@/lib/threads.functions";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
 export const Route = createFileRoute("/")({
   component: Index,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
 function Index() {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const qc = useQueryClient();
+
+  const handleFirstMessage = async (text: string) => {
+    const id = crypto.randomUUID();
+    const title = text.slice(0, 60);
+    if (user) {
+      try {
+        await createThread({ data: { id, title } });
+        qc.invalidateQueries({ queryKey: ["threads", user.id] });
+      } catch (e) {
+        console.error(e);
+      }
+    } else {
+      createLocalThread(id, title);
+    }
+    navigate({ to: "/chat/$threadId", params: { threadId: id }, replace: true });
+  };
+
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
+    <AppShell>
+      <ChatWindow
+        threadId="draft"
+        initialMessages={[]}
+        onMessagesChange={() => {}}
+        onFirstUserMessage={handleFirstMessage}
       />
-    </div>
+    </AppShell>
   );
 }
