@@ -1,4 +1,4 @@
-import { useEffect, useSyncExternalStore } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 import type { UIMessage } from "ai";
 
 export type LocalThread = {
@@ -61,11 +61,6 @@ export function useLocalThreads() {
   return snapshot;
 }
 
-export function useHydrated() {
-  const [hydrated, setHydrated] = (globalThis as any).React?.useState?.(false) ?? [false, () => {}];
-  return hydrated;
-}
-
 export function createLocalThread(id: string, title = "New chat"): LocalThread {
   const list = read();
   const t: LocalThread = { id, title, updatedAt: Date.now(), messages: [] };
@@ -94,8 +89,8 @@ export function deleteLocalThread(id: string) {
   write(read().filter((t) => t.id !== id));
 }
 
-export function useHydratedFlag() {
-  const [h, setH] = (require("react") as typeof import("react")).useState(false);
+export function useHydrated() {
+  const [h, setH] = useState(false);
   useEffect(() => setH(true), []);
   return h;
 }
