@@ -145,13 +145,19 @@ export function AppShell({ children }: { children: ReactNode }) {
         <div className="border-t border-sidebar-border/70 p-3">
           {loading ? null : user ? (
             <div className="flex items-center gap-2 rounded-xl border border-border/60 bg-card/60 p-2 shadow-sm">
-              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-brand to-accent-warm text-brand-foreground shadow-inner">
-                <User className="h-4 w-4" />
-              </div>
-              <div className="min-w-0 flex-1">
-                <p className="truncate text-xs font-medium">{user.email}</p>
-                <p className="text-[10px] text-muted-foreground">Synced across devices</p>
-              </div>
+              <Link
+                to="/profile"
+                className="flex min-w-0 flex-1 items-center gap-2 rounded-lg p-1 transition-colors hover:bg-sidebar-accent/60"
+                aria-label="Open profile"
+              >
+                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-brand to-accent-warm text-brand-foreground shadow-inner">
+                  <User className="h-4 w-4" />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="truncate text-xs font-medium">{user.email}</p>
+                  <p className="text-[10px] text-muted-foreground">View profile</p>
+                </div>
+              </Link>
               <Button variant="ghost" size="icon-sm" onClick={signOut} aria-label="Sign out">
                 <LogOut className="h-4 w-4" />
               </Button>
