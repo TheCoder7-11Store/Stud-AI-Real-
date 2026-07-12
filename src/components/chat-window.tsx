@@ -71,10 +71,10 @@ export function ChatWindow({
   };
 
   const quickPrompts = [
-    "Explain photosynthesis for a 7th grader",
-    "Give me 5 SAT reading practice questions",
-    "Make a 2-week IELTS writing revision plan",
-    "Quiz me on quadratic equations",
+    "Explain photosynthesis like I'm in 7th grade ✨",
+    "Give me 5 SAT reading practice questions 🎯",
+    "Make a 2-week IELTS writing revision plan 📝",
+    "Quiz me on quadratic equations 💡",
   ];
 
   return (
@@ -138,7 +138,7 @@ export function ChatWindow({
             className="rounded-2xl border border-border/70 bg-card/80 shadow-lg shadow-brand/5 backdrop-blur"
           >
             <PromptInputTextarea
-              placeholder="Ask Stud AI anything — a concept, a practice question, a study plan…"
+              placeholder="Ask me anything — a concept, a practice question, or a study plan! I'm here to help. 💬"
               autoFocus
             />
             <PromptInputFooter className="justify-end">
