@@ -71,10 +71,10 @@ export function ChatWindow({
   };
 
   const quickPrompts = [
-    "Explain photosynthesis for a 7th grader",
-    "Give me 5 SAT reading practice questions",
-    "Make a 2-week IELTS writing revision plan",
-    "Quiz me on quadratic equations",
+    "Explain photosynthesis like I'm in 7th grade ✨",
+    "Give me 5 SAT reading practice questions 🎯",
+    "Make a 2-week IELTS writing revision plan 📝",
+    "Quiz me on quadratic equations 💡",
   ];
 
   return (
