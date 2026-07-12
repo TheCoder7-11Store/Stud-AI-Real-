@@ -47,10 +47,17 @@ export function ChatWindow({
 
   const persistRef = useRef(onMessagesChange);
   persistRef.current = onMessagesChange;
+  const lastPersistedRef = useRef<string>("");
   useEffect(() => {
-    if (status === "ready" || status === "streaming" || status === "submitted") {
-      persistRef.current(messages);
-    }
+    // Only persist when a turn finishes (status "ready") to avoid
+    // thrashing localStorage / DB writes on every streamed token,
+    // which triggers global re-renders and makes streaming feel laggy.
+    if (status !== "ready") return;
+    if (messages.length === 0) return;
+    const sig = messages.length + ":" + (messages[messages.length - 1]?.id ?? "");
+    if (sig === lastPersistedRef.current) return;
+    lastPersistedRef.current = sig;
+    persistRef.current(messages);
   }, [messages, status]);
 
   const isLoading = status === "submitted" || status === "streaming";
