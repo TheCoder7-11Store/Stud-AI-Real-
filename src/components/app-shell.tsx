@@ -1,7 +1,7 @@
 import { Link, useNavigate, useParams } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState, type ReactNode } from "react";
-import { LogIn, LogOut, MessageSquarePlus, Trash2, User } from "lucide-react";
+import { Info, LogIn, LogOut, MessageSquarePlus, Trash2, User } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/use-auth";
@@ -143,6 +143,13 @@ export function AppShell({ children }: { children: ReactNode }) {
         </div>
 
         <div className="border-t border-sidebar-border/70 p-3">
+          <Link
+            to="/about"
+            className="mb-2 flex items-center gap-2 rounded-lg px-3 py-2 text-xs font-medium text-muted-foreground transition-colors hover:bg-sidebar-accent/60 hover:text-foreground"
+          >
+            <Info className="h-3.5 w-3.5" />
+            About Stud AI
+          </Link>
           {loading ? null : user ? (
             <div className="flex items-center gap-2 rounded-xl border border-border/60 bg-card/60 p-2 shadow-sm">
               <Link
