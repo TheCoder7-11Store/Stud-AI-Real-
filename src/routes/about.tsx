@@ -86,7 +86,7 @@ function AboutPage() {
           <p className="mx-auto mt-5 max-w-2xl text-base text-muted-foreground sm:text-lg">
             Stud AI is a friendly AI tutor built for middle and high schoolers — and for anyone
             prepping for the SAT, IELTS, or TOEFL. It explains concepts in plain language, quizzes
-            you at just the right level, and helps you revise so exam day feels less scary.
+            you at just the right level, and helps you revise so exam day feels more confident.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <Link
