@@ -86,7 +86,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         </div>
 
         <div className="px-3 pt-2">
-          <Link to="/">
+          <Link to="/start">
             <Button
               variant="secondary"
               className="w-full justify-start gap-2 border border-border/60 bg-card/70 shadow-sm hover:bg-card"
