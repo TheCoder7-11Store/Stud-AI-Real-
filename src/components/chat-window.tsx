@@ -155,6 +155,28 @@ export function ChatWindow({
                         </div>
                       );
                     }
+                    if (part.type === "file") {
+                      const isImage = part.mediaType?.startsWith("image/");
+                      return isImage ? (
+                        <img
+                          key={i}
+                          src={part.url}
+                          alt={part.filename ?? "attachment"}
+                          className="mt-2 max-h-64 rounded-lg border border-border/50"
+                        />
+                      ) : (
+                        <a
+                          key={i}
+                          href={part.url}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="mt-2 inline-flex items-center gap-2 rounded-lg border border-border/60 bg-background/50 px-3 py-1.5 text-xs text-foreground hover:bg-muted/60"
+                        >
+                          <Paperclip className="size-3" />
+                          {part.filename ?? "attachment"}
+                        </a>
+                      );
+                    }
                     return null;
                   })}
                 </MessageContent>
