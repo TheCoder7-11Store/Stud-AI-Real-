@@ -1,7 +1,8 @@
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport, type UIMessage } from "ai";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
+import { Link2, Paperclip, X } from "lucide-react";
 import {
   Conversation,
   ConversationContent,
@@ -17,6 +18,12 @@ import {
   PromptInputTextarea,
   PromptInputFooter,
   PromptInputSubmit,
+  PromptInputTools,
+  PromptInputActionMenu,
+  PromptInputActionMenuTrigger,
+  PromptInputActionMenuContent,
+  PromptInputActionAddAttachments,
+  PromptInputActionMenuItem,
   type PromptInputMessage,
 } from "@/components/ai-elements/prompt-input";
 import { Shimmer } from "@/components/ai-elements/shimmer";
@@ -45,6 +52,8 @@ export function ChatWindow({
     },
   });
 
+  const [pendingLinks, setPendingLinks] = useState<string[]>([]);
+
   const persistRef = useRef(onMessagesChange);
   persistRef.current = onMessagesChange;
   const lastPersistedRef = useRef<string>("");
@@ -65,9 +74,42 @@ export function ChatWindow({
 
   const handleSubmit = (msg: PromptInputMessage) => {
     const text = (msg.text ?? "").trim();
-    if (!text) return;
-    if (isEmpty && onFirstUserMessage) onFirstUserMessage(text);
-    sendMessage({ text });
+    const files = msg.files ?? [];
+    if (!text && files.length === 0 && pendingLinks.length === 0) return;
+
+    const linkBlock =
+      pendingLinks.length > 0
+        ? (text ? "\n\n" : "") +
+          "Please help me create notes / study material from these link(s):\n" +
+          pendingLinks.map((u) => `- ${u}`).join("\n")
+        : "";
+    const finalText = (text + linkBlock).trim() || "Please generate study notes from the attached material.";
+
+    if (isEmpty && onFirstUserMessage) onFirstUserMessage(finalText.slice(0, 80));
+
+    const parts: UIMessage["parts"] = [
+      { type: "text", text: finalText },
+      ...files.map((f) => ({
+        type: "file" as const,
+        url: f.url,
+        mediaType: f.mediaType,
+        filename: f.filename,
+      })),
+    ];
+
+    sendMessage({ role: "user", parts });
+    setPendingLinks([]);
+  };
+
+  const handleAddLink = () => {
+    const url = window.prompt("Paste a link (article, video, notes, etc.) — Stud AI will use it as context:");
+    if (!url) return;
+    try {
+      const u = new URL(url.startsWith("http") ? url : `https://${url}`);
+      setPendingLinks((prev) => [...prev, u.toString()]);
+    } catch {
+      toast.error("That doesn't look like a valid link.");
+    }
   };
 
   const quickPrompts = [
@@ -113,6 +155,28 @@ export function ChatWindow({
                         </div>
                       );
                     }
+                    if (part.type === "file") {
+                      const isImage = part.mediaType?.startsWith("image/");
+                      return isImage ? (
+                        <img
+                          key={i}
+                          src={part.url}
+                          alt={part.filename ?? "attachment"}
+                          className="mt-2 max-h-64 rounded-lg border border-border/50"
+                        />
+                      ) : (
+                        <a
+                          key={i}
+                          href={part.url}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="mt-2 inline-flex items-center gap-2 rounded-lg border border-border/60 bg-background/50 px-3 py-1.5 text-xs text-foreground hover:bg-muted/60"
+                        >
+                          <Paperclip className="size-3" />
+                          {part.filename ?? "attachment"}
+                        </a>
+                      );
+                    }
                     return null;
                   })}
                 </MessageContent>
@@ -136,12 +200,57 @@ export function ChatWindow({
           <PromptInput
             onSubmit={handleSubmit}
             className="rounded-2xl border border-border/70 bg-card/80 shadow-lg shadow-brand/5 backdrop-blur"
+            accept="image/*,application/pdf,.ppt,.pptx,.doc,.docx,.txt,.md"
+            multiple
           >
             <PromptInputTextarea
               placeholder="Ask me anything — a concept, a practice question, or a study plan! I'm here to help. 💬"
               autoFocus
             />
-            <PromptInputFooter className="justify-end">
+            {pendingLinks.length > 0 && (
+              <div className="flex flex-wrap gap-1.5 px-3 pb-1 pt-2">
+                {pendingLinks.map((l, i) => (
+                  <span
+                    key={i}
+                    className="inline-flex items-center gap-1.5 rounded-full border border-border/70 bg-muted/60 px-2.5 py-1 text-xs text-foreground"
+                  >
+                    <Link2 className="size-3" />
+                    <span className="max-w-[220px] truncate">{l}</span>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setPendingLinks((prev) => prev.filter((_, idx) => idx !== i))
+                      }
+                      className="rounded-full p-0.5 hover:bg-background/70"
+                      aria-label="Remove link"
+                    >
+                      <X className="size-3" />
+                    </button>
+                  </span>
+                ))}
+              </div>
+            )}
+            <PromptInputFooter>
+              <PromptInputTools>
+                <PromptInputActionMenu>
+                  <PromptInputActionMenuTrigger
+                    tooltip="Attach photos, PDFs, slides, or links to generate notes"
+                  >
+                    <Paperclip className="size-4" />
+                  </PromptInputActionMenuTrigger>
+                  <PromptInputActionMenuContent>
+                    <PromptInputActionAddAttachments label="Upload photo, PDF or slides" />
+                    <PromptInputActionMenuItem
+                      onSelect={(e) => {
+                        e.preventDefault();
+                        handleAddLink();
+                      }}
+                    >
+                      <Link2 className="mr-2 size-4" /> Add a link
+                    </PromptInputActionMenuItem>
+                  </PromptInputActionMenuContent>
+                </PromptInputActionMenu>
+              </PromptInputTools>
               <PromptInputSubmit
                 status={status}
                 onClick={isLoading ? () => stop() : undefined}
