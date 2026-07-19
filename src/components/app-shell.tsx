@@ -71,8 +71,8 @@ export function AppShell({ children }: { children: ReactNode }) {
       {/* Sidebar */}
       <aside
         className={cn(
-          "fixed inset-y-0 left-0 z-30 flex w-72 flex-col border-r border-sidebar-border/70 bg-sidebar/80 text-sidebar-foreground backdrop-blur-xl transition-transform sm:static sm:translate-x-0",
-          sidebarOpen ? "translate-x-0" : "-translate-x-full sm:translate-x-0",
+          "fixed inset-y-0 left-0 z-30 flex w-72 flex-col border-r border-sidebar-border/70 bg-sidebar/80 text-sidebar-foreground backdrop-blur-xl transition-transform lg:static lg:translate-x-0",
+          sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0",
         )}
       >
         <div className="flex items-center gap-2.5 px-4 pb-3 pt-5">
@@ -185,14 +185,14 @@ export function AppShell({ children }: { children: ReactNode }) {
 
       {sidebarOpen && (
         <div
-          className="fixed inset-0 z-20 bg-background/60 backdrop-blur-sm sm:hidden"
+          className="fixed inset-0 z-20 bg-background/60 backdrop-blur-sm lg:hidden"
           onClick={() => setSidebarOpen(false)}
         />
       )}
 
       {/* Main */}
       <main className="flex min-w-0 flex-1 flex-col">
-        <header className="flex items-center justify-between border-b border-border/60 bg-background/70 px-4 py-2 backdrop-blur sm:hidden">
+        <header className="flex items-center justify-between border-b border-border/60 bg-background/70 px-4 py-2 backdrop-blur lg:hidden">
           <button
             className="rounded-md p-2 hover:bg-accent"
             onClick={() => setSidebarOpen((s) => !s)}
