@@ -2,7 +2,7 @@ import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport, type UIMessage } from "ai";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
-import { Link2, Paperclip, X } from "lucide-react";
+import { Camera, Link2, Paperclip, X } from "lucide-react";
 import {
   Conversation,
   ConversationContent,
@@ -53,6 +53,8 @@ export function ChatWindow({
   });
 
   const [pendingLinks, setPendingLinks] = useState<string[]>([]);
+  const cameraInputRef = useRef<HTMLInputElement | null>(null);
+  const cameraGrantedRef = useRef(false);
 
   const persistRef = useRef(onMessagesChange);
   persistRef.current = onMessagesChange;
@@ -110,6 +112,51 @@ export function ChatWindow({
     } catch {
       toast.error("That doesn't look like a valid link.");
     }
+  };
+
+  const handleUseCamera = async () => {
+    // Always confirm first — the user asked to be prompted before camera access.
+    if (!cameraGrantedRef.current) {
+      const ok = window.confirm(
+        "Stud AI would like to access your camera to capture a photo of your notes or a question. Allow?",
+      );
+      if (!ok) return;
+      cameraGrantedRef.current = true;
+    }
+
+    // Try the MediaDevices permission flow when available (mobile & modern browsers),
+    // then fall back to the capture-enabled file input, which opens the OS camera UI.
+    try {
+      if (typeof navigator !== "undefined" && navigator.mediaDevices?.getUserMedia) {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
+        // We just need permission; immediately stop tracks and let the file input take the shot.
+        stream.getTracks().forEach((t) => t.stop());
+      }
+    } catch {
+      toast.error("Camera permission was denied. You can still upload a photo from your library.");
+      return;
+    }
+
+    cameraInputRef.current?.click();
+  };
+
+  const handleCameraFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    e.target.value = "";
+    if (!file) return;
+    const dataUrl: string = await new Promise((resolve, reject) => {
+      const r = new FileReader();
+      r.onload = () => resolve(String(r.result));
+      r.onerror = () => reject(r.error);
+      r.readAsDataURL(file);
+    });
+    sendMessage({
+      role: "user",
+      parts: [
+        { type: "text", text: "Please help me understand this — generate notes and explain the key concepts." },
+        { type: "file", url: dataUrl, mediaType: file.type || "image/jpeg", filename: file.name || "photo.jpg" },
+      ],
+    });
   };
 
   const quickPrompts = [
@@ -243,6 +290,14 @@ export function ChatWindow({
                     <PromptInputActionMenuItem
                       onSelect={(e) => {
                         e.preventDefault();
+                        void handleUseCamera();
+                      }}
+                    >
+                      <Camera className="mr-2 size-4" /> Take photo with camera
+                    </PromptInputActionMenuItem>
+                    <PromptInputActionMenuItem
+                      onSelect={(e) => {
+                        e.preventDefault();
                         handleAddLink();
                       }}
                     >
@@ -258,6 +313,14 @@ export function ChatWindow({
               />
             </PromptInputFooter>
           </PromptInput>
+          <input
+            ref={cameraInputRef}
+            type="file"
+            accept="image/*"
+            capture="environment"
+            className="hidden"
+            onChange={handleCameraFile}
+          />
           <p className="mt-2 text-center text-[11px] text-muted-foreground">
             Stud AI can make mistakes. Double-check anything important.
           </p>
