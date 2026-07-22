@@ -1,7 +1,18 @@
-import { Link, useNavigate, useParams } from "@tanstack/react-router";
+import { Link, useNavigate, useParams, useRouterState } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState, type ReactNode } from "react";
-import { Info, LogIn, LogOut, MessageSquarePlus, Trash2, User } from "lucide-react";
+import {
+  Calendar,
+  Info,
+  Layers,
+  LogIn,
+  LogOut,
+  MessageSquarePlus,
+  Pin,
+  Trash2,
+  TrendingUp,
+  User,
+} from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/use-auth";
@@ -15,12 +26,20 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import logo from "@/assets/logo.png";
 
+const studyTools = [
+  { title: "Pinned notes", url: "/notes", icon: Pin },
+  { title: "Study plans", url: "/study-plans", icon: Calendar },
+  { title: "Flashcards", url: "/flashcards", icon: Layers },
+  { title: "Progress", url: "/progress", icon: TrendingUp },
+];
+
 export function AppShell({ children }: { children: ReactNode }) {
   const { user, loading } = useAuth();
   const hydrated = useHydrated();
   const localThreads = useLocalThreads();
   const params = useParams({ strict: false }) as { threadId?: string };
   const activeId = params.threadId;
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
   const navigate = useNavigate();
   const qc = useQueryClient();
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -97,7 +116,34 @@ export function AppShell({ children }: { children: ReactNode }) {
           </Link>
         </div>
 
-        <div className="mt-5 flex-1 overflow-y-auto px-2 pb-2">
+        <div className="mt-5 px-2 pb-2">
+          <p className="px-3 pb-2 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/70">
+            Study tools
+          </p>
+          <ul className="space-y-0.5">
+            {studyTools.map((tool) => {
+              const isActive = pathname === tool.url;
+              return (
+                <li key={tool.title}>
+                  <Link
+                    to={tool.url}
+                    className={cn(
+                      "group flex items-center gap-2 rounded-lg px-3 py-2 text-sm transition-colors",
+                      isActive
+                        ? "bg-sidebar-accent text-sidebar-accent-foreground shadow-sm"
+                        : "text-muted-foreground hover:bg-sidebar-accent/60 hover:text-foreground",
+                    )}
+                  >
+                    <tool.icon className="h-4 w-4" />
+                    <span>{tool.title}</span>
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+
+        <div className="mt-2 flex-1 overflow-y-auto px-2 pb-2">
           <p className="px-3 pb-2 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/70">
             Recent chats
           </p>
