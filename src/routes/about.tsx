@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowLeft, BookOpen, Brain, GraduationCap, Sparkles, Target, Users } from "lucide-react";
+import { ArrowLeft, BookOpen, Brain, Check, GraduationCap, Sparkles, Target, Users } from "lucide-react";
 import logo from "@/assets/logo.png";
 
 export const Route = createFileRoute("/about")({
@@ -135,6 +135,21 @@ function AboutPage() {
               feel manageable. Ask anything, revise anything, and grow more confident with every
               chat.
             </p>
+            <ul className="mt-6 grid gap-3 sm:grid-cols-2">
+              {[
+                "Built for SAT, IELTS, TOEFL & School Exams",
+                "AI-powered explanations in plain English",
+                "Available 24/7",
+                "Private & secure conversations",
+              ].map((item) => (
+                <li key={item} className="flex items-start gap-3">
+                  <span className="mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-brand/15 text-brand">
+                    <Check className="h-3 w-3" />
+                  </span>
+                  <span className="text-foreground">{item}</span>
+                </li>
+              ))}
+            </ul>
           </div>
         </section>
 
