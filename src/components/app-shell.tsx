@@ -39,6 +39,7 @@ export function AppShell({ children }: { children: ReactNode }) {
   const localThreads = useLocalThreads();
   const params = useParams({ strict: false }) as { threadId?: string };
   const activeId = params.threadId;
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
   const navigate = useNavigate();
   const qc = useQueryClient();
   const [sidebarOpen, setSidebarOpen] = useState(false);
