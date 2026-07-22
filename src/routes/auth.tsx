@@ -1,5 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
 import { Button } from "@/components/ui/button";
@@ -25,6 +26,24 @@ function AuthPage() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const credentialsSchema = z.object({
+    email: z
+      .string()
+      .trim()
+      .email({ message: "Enter a valid email address" })
+      .max(255, { message: "Email is too long" }),
+    password:
+      mode === "signup"
+        ? z
+            .string()
+            .min(8, { message: "Password must be at least 8 characters" })
+            .max(72, { message: "Password must be less than 72 characters" })
+            .regex(/[A-Z]/, { message: "Include an uppercase letter" })
+            .regex(/[a-z]/, { message: "Include a lowercase letter" })
+            .regex(/[0-9]/, { message: "Include a number" })
+        : z.string().min(1, { message: "Enter your password" }).max(72),
+  });
+
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
       if (data.user) navigate({ to: "/" });
@@ -33,18 +52,26 @@ function AuthPage() {
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const parsed = credentialsSchema.safeParse({ email, password });
+    if (!parsed.success) {
+      toast.error(parsed.error.issues[0]?.message ?? "Invalid credentials");
+      return;
+    }
     setLoading(true);
     try {
       if (mode === "signup") {
         const { error } = await supabase.auth.signUp({
-          email,
-          password,
+          email: parsed.data.email,
+          password: parsed.data.password,
           options: { emailRedirectTo: window.location.origin },
         });
         if (error) throw error;
         toast.success("Account created. You're signed in.");
       } else {
-        const { error } = await supabase.auth.signInWithPassword({ email, password });
+        const { error } = await supabase.auth.signInWithPassword({
+          email: parsed.data.email,
+          password: parsed.data.password,
+        });
         if (error) throw error;
       }
       navigate({ to: "/" });
@@ -113,9 +140,15 @@ function AuthPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                minLength={6}
+                minLength={mode === "signup" ? 8 : 1}
                 autoComplete={mode === "signup" ? "new-password" : "current-password"}
               />
+              {mode === "signup" && (
+                <p className="text-xs text-muted-foreground">
+                  At least 8 characters, with upper, lower, and a number. We block
+                  passwords found in known data breaches.
+                </p>
+              )}
             </div>
             <Button type="submit" className="w-full" disabled={loading}>
               {loading ? "Please wait…" : mode === "signin" ? "Sign in" : "Create account"}
