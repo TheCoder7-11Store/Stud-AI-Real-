@@ -1,7 +1,18 @@
-import { Link, useNavigate, useParams } from "@tanstack/react-router";
+import { Link, useNavigate, useParams, useRouterState } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState, type ReactNode } from "react";
-import { Info, LogIn, LogOut, MessageSquarePlus, Trash2, User } from "lucide-react";
+import {
+  Calendar,
+  Info,
+  Layers,
+  LogIn,
+  LogOut,
+  MessageSquarePlus,
+  Pin,
+  Trash2,
+  TrendingUp,
+  User,
+} from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/use-auth";
@@ -14,6 +25,13 @@ import { deleteThread, listThreads } from "@/lib/threads.functions";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import logo from "@/assets/logo.png";
+
+const studyTools = [
+  { title: "Pinned notes", url: "/notes", icon: Pin },
+  { title: "Study plans", url: "/study-plans", icon: Calendar },
+  { title: "Flashcards", url: "/flashcards", icon: Layers },
+  { title: "Progress", url: "/progress", icon: TrendingUp },
+];
 
 export function AppShell({ children }: { children: ReactNode }) {
   const { user, loading } = useAuth();
