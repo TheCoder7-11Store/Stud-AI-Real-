@@ -115,7 +115,34 @@ export function AppShell({ children }: { children: ReactNode }) {
           </Link>
         </div>
 
-        <div className="mt-5 flex-1 overflow-y-auto px-2 pb-2">
+        <div className="mt-5 px-2 pb-2">
+          <p className="px-3 pb-2 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/70">
+            Study tools
+          </p>
+          <ul className="space-y-0.5">
+            {studyTools.map((tool) => {
+              const isActive = pathname === tool.url;
+              return (
+                <li key={tool.title}>
+                  <Link
+                    to={tool.url}
+                    className={cn(
+                      "group flex items-center gap-2 rounded-lg px-3 py-2 text-sm transition-colors",
+                      isActive
+                        ? "bg-sidebar-accent text-sidebar-accent-foreground shadow-sm"
+                        : "text-muted-foreground hover:bg-sidebar-accent/60 hover:text-foreground",
+                    )}
+                  >
+                    <tool.icon className="h-4 w-4" />
+                    <span>{tool.title}</span>
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+
+        <div className="mt-2 flex-1 overflow-y-auto px-2 pb-2">
           <p className="px-3 pb-2 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/70">
             Recent chats
           </p>
