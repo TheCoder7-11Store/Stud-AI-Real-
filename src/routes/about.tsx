@@ -1,5 +1,18 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowLeft, BookOpen, Brain, Check, GraduationCap, Sparkles, Target, Users } from "lucide-react";
+import {
+  ArrowLeft,
+  BookOpen,
+  Brain,
+  Calendar,
+  Check,
+  GraduationCap,
+  Layers,
+  Pin,
+  Sparkles,
+  Target,
+  TrendingUp,
+  Users,
+} from "lucide-react";
 import logo from "@/assets/logo.png";
 
 export const Route = createFileRoute("/about")({
@@ -52,6 +65,26 @@ const features = [
     icon: Users,
     title: "Built for students",
     body: "Made for middle schoolers, high schoolers, and international exam takers who want a tutor available 24/7.",
+  },
+  {
+    icon: Pin,
+    title: "Pinned notes",
+    body: "Save the explanations, formulas, and summaries you keep coming back to so revision is one click away.",
+  },
+  {
+    icon: Calendar,
+    title: "Study plans",
+    body: "Map out day-by-day revision schedules around your exam dates and the topics you need to master most.",
+  },
+  {
+    icon: Layers,
+    title: "Flashcards",
+    body: "Generate flashcards from any chat and flip through them to lock in vocabulary, dates, and formulas.",
+  },
+  {
+    icon: TrendingUp,
+    title: "Progress tracking",
+    body: "See how much you've studied, spot weak areas, and build streaks that keep motivation high.",
   },
 ];
 
