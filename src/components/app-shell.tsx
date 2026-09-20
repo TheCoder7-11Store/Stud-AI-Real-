@@ -49,6 +49,9 @@ export function AppShell({ children }: { children: ReactNode }) {
   const navigate = useNavigate();
   const qc = useQueryClient();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [renamingId, setRenamingId] = useState<string | null>(null);
+  const [renameValue, setRenameValue] = useState("");
+
 
   const cloud = useQuery({
     queryKey: ["threads", user?.id],
@@ -68,6 +71,34 @@ export function AppShell({ children }: { children: ReactNode }) {
     qc.clear();
     await supabase.auth.signOut();
     navigate({ to: "/" });
+  };
+
+  const startRename = (id: string, currentTitle: string, e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setRenamingId(id);
+    setRenameValue(currentTitle || "");
+  };
+
+  const cancelRename = () => {
+    setRenamingId(null);
+    setRenameValue("");
+  };
+
+  const commitRename = async (id: string) => {
+    const title = renameValue.trim();
+    cancelRename();
+    if (!title) return;
+    if (user) {
+      try {
+        await renameThread({ data: { id, title } });
+        qc.invalidateQueries({ queryKey: ["threads", user.id] });
+      } catch (err) {
+        toast.error(err instanceof Error ? err.message : "Failed to rename");
+      }
+    } else {
+      updateLocalThread(id, { title });
+    }
   };
 
   const removeThread = async (id: string, e: React.MouseEvent) => {
