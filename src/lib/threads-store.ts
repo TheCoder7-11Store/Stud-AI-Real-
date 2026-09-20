@@ -89,6 +89,14 @@ export function deleteLocalThread(id: string) {
   write(read().filter((t) => t.id !== id));
 }
 
+export function readLocalThreads(): LocalThread[] {
+  return read();
+}
+
+export function clearLocalThreads() {
+  write([]);
+}
+
 export function useHydrated() {
   const [h, setH] = useState(false);
   useEffect(() => setH(true), []);

@@ -20,8 +20,10 @@ import {
   useLocalThreads,
   useHydrated,
   deleteLocalThread,
+  readLocalThreads,
+  clearLocalThreads,
 } from "@/lib/threads-store";
-import { deleteThread, listThreads } from "@/lib/threads.functions";
+import { deleteThread, listThreads, syncLocalThreads } from "@/lib/threads.functions";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import logo from "@/assets/logo.png";
