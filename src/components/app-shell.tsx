@@ -87,6 +87,41 @@ export function AppShell({ children }: { children: ReactNode }) {
     setSidebarOpen(false);
   }, [activeId]);
 
+  // One-time per session: when a user signs in, move any local (anonymous)
+  // chats into their cloud account, then clear local storage.
+  useEffect(() => {
+    if (!user || typeof window === "undefined") return;
+    const flag = `studai.synced.${user.id}`;
+    if (window.sessionStorage.getItem(flag)) return;
+    window.sessionStorage.setItem(flag, "1");
+
+    const locals = readLocalThreads();
+    if (locals.length === 0) return;
+
+    syncLocalThreads({
+      data: {
+        threads: locals.map((t) => ({
+          id: t.id,
+          title: t.title || "New chat",
+          messages: t.messages.map((m) => ({ role: m.role, parts: m.parts })),
+        })),
+      },
+    })
+      .then((res) => {
+        if (res.synced > 0) {
+          clearLocalThreads();
+          qc.invalidateQueries({ queryKey: ["threads", user.id] });
+          toast.success(`Synced ${res.synced} chat${res.synced === 1 ? "" : "s"} to your account`);
+        } else {
+          clearLocalThreads();
+        }
+      })
+      .catch(() => {
+        window.sessionStorage.removeItem(flag);
+        toast.error("Couldn't sync your local chats — they'll stay on this device");
+      });
+  }, [user, qc]);
+
   return (
     <div className="flex h-screen w-full text-foreground">
       {/* Sidebar */}
