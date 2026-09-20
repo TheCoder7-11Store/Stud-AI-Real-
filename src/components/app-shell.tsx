@@ -3,15 +3,18 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState, type ReactNode } from "react";
 import {
   Calendar,
+  Check,
   Info,
   Layers,
   LogIn,
   LogOut,
   MessageSquarePlus,
+  Pencil,
   Pin,
   Trash2,
   TrendingUp,
   User,
+  X,
 } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
@@ -22,8 +25,9 @@ import {
   deleteLocalThread,
   readLocalThreads,
   clearLocalThreads,
+  updateLocalThread,
 } from "@/lib/threads-store";
-import { deleteThread, listThreads, syncLocalThreads } from "@/lib/threads.functions";
+import { deleteThread, listThreads, renameThread, syncLocalThreads } from "@/lib/threads.functions";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import logo from "@/assets/logo.png";
