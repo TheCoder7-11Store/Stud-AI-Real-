@@ -78,6 +78,64 @@ export const deleteThread = createServerFn({ method: "POST" })
     return { ok: true };
   });
 
+export const syncLocalThreads = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: unknown) =>
+    z
+      .object({
+        threads: z
+          .array(
+            z.object({
+              id: z.string().uuid(),
+              title: z.string().min(1).max(200),
+              messages: z
+                .array(
+                  z.object({
+                    role: z.string(),
+                    parts: z.any(),
+                  }),
+                )
+                .max(500),
+            }),
+          )
+          .max(100),
+      })
+      .parse(d),
+  )
+  .handler(async ({ data, context }) => {
+    let synced = 0;
+    for (const t of data.threads) {
+      // Skip if the thread already exists in the cloud (e.g. synced before).
+      const { data: existing, error: e1 } = await context.supabase
+        .from("threads")
+        .select("id")
+        .eq("id", t.id)
+        .maybeSingle();
+      if (e1) throw new Error(e1.message);
+      if (existing) continue;
+
+      const { error: e2 } = await context.supabase.from("threads").insert({
+        id: t.id,
+        user_id: context.userId,
+        title: t.title,
+      });
+      if (e2) throw new Error(e2.message);
+
+      if (t.messages.length > 0) {
+        const rows = t.messages.map((m) => ({
+          thread_id: t.id,
+          user_id: context.userId,
+          role: m.role,
+          parts: m.parts,
+        }));
+        const { error: e3 } = await context.supabase.from("messages").insert(rows);
+        if (e3) throw new Error(e3.message);
+      }
+      synced++;
+    }
+    return { ok: true, synced };
+  });
+
 export const saveMessages = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d: unknown) =>
