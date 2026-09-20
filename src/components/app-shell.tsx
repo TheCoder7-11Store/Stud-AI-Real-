@@ -238,21 +238,68 @@ export function AppShell({ children }: { children: ReactNode }) {
                     {activeId === t.id && (
                       <span className="absolute left-0 top-1/2 h-4 w-0.5 -translate-y-1/2 rounded-r-full bg-gradient-to-b from-brand to-accent-warm" />
                     )}
-                    <Link
-                      to="/chat/$threadId"
-                      params={{ threadId: t.id }}
-                      className="flex-1 truncate px-3 py-2"
-                    >
-                      {t.title || "New chat"}
-                    </Link>
-                    <button
-                      type="button"
-                      onClick={(e) => removeThread(t.id, e)}
-                      className="mr-1 rounded p-1.5 text-muted-foreground opacity-0 hover:bg-destructive/10 hover:text-destructive group-hover:opacity-100"
-                      aria-label="Delete chat"
-                    >
-                      <Trash2 className="h-3.5 w-3.5" />
-                    </button>
+                    {renamingId === t.id ? (
+                      <form
+                        className="flex flex-1 items-center gap-1 px-2 py-1"
+                        onSubmit={(e) => {
+                          e.preventDefault();
+                          commitRename(t.id);
+                        }}
+                      >
+                        <input
+                          autoFocus
+                          value={renameValue}
+                          onChange={(e) => setRenameValue(e.target.value)}
+                          onKeyDown={(e) => {
+                            if (e.key === "Escape") cancelRename();
+                          }}
+                          maxLength={120}
+                          className="min-w-0 flex-1 rounded-md border border-border/70 bg-background px-2 py-1 text-sm outline-none focus:border-brand"
+                          aria-label="Chat name"
+                        />
+                        <button
+                          type="submit"
+                          className="rounded p-1 text-muted-foreground hover:bg-brand/10 hover:text-brand"
+                          aria-label="Save name"
+                        >
+                          <Check className="h-3.5 w-3.5" />
+                        </button>
+                        <button
+                          type="button"
+                          onClick={cancelRename}
+                          className="rounded p-1 text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
+                          aria-label="Cancel rename"
+                        >
+                          <X className="h-3.5 w-3.5" />
+                        </button>
+                      </form>
+                    ) : (
+                      <>
+                        <Link
+                          to="/chat/$threadId"
+                          params={{ threadId: t.id }}
+                          className="flex-1 truncate px-3 py-2"
+                        >
+                          {t.title || "New chat"}
+                        </Link>
+                        <button
+                          type="button"
+                          onClick={(e) => startRename(t.id, t.title, e)}
+                          className="rounded p-1.5 text-muted-foreground opacity-0 hover:bg-brand/10 hover:text-brand group-hover:opacity-100"
+                          aria-label="Rename chat"
+                        >
+                          <Pencil className="h-3.5 w-3.5" />
+                        </button>
+                        <button
+                          type="button"
+                          onClick={(e) => removeThread(t.id, e)}
+                          className="mr-1 rounded p-1.5 text-muted-foreground opacity-0 hover:bg-destructive/10 hover:text-destructive group-hover:opacity-100"
+                          aria-label="Delete chat"
+                        >
+                          <Trash2 className="h-3.5 w-3.5" />
+                        </button>
+                      </>
+                    )}
                   </div>
                 </li>
               ))}
