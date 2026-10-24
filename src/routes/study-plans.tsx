@@ -6,7 +6,7 @@ import logo from "@/assets/logo.png";
 export const Route = createFileRoute("/study-plans")({
   head: () => ({
     meta: [
-      { title: "Study plans — Stud AI" },
+      { title: "Study plans — Luminosity" },
       { name: "description", content: "Build personalized revision schedules for your exams." },
       { name: "robots", content: "noindex" },
     ],
@@ -32,7 +32,7 @@ function StudyPlansPage() {
           <Link to="/" className="flex items-center gap-2">
             <img src={logo} alt="" width={22} height={22} className="rounded" />
             <span className="font-display text-base font-semibold">
-              Stud <span className="text-gradient-brand">AI</span>
+              Lumin<span className="text-gradient-brand">osity</span>
             </span>
           </Link>
         </div>
@@ -45,7 +45,7 @@ function StudyPlansPage() {
             Study plans
           </h1>
           <p className="mx-auto mt-3 max-w-md text-sm text-muted-foreground sm:text-base">
-            Tell Stud AI your exam date and topics, and it will map out a day-by-day revision plan you can actually follow.
+            Tell Luminosity your exam date and topics, and it will map out a day-by-day revision plan you can actually follow.
           </p>
           <div className="mt-8 inline-flex items-center gap-2 rounded-full border border-border/60 bg-card/60 px-4 py-2 text-xs text-muted-foreground">
             <Sparkles className="h-3.5 w-3.5 text-accent-warm" />

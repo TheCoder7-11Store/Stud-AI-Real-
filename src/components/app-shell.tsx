@@ -172,7 +172,7 @@ export function AppShell({ children }: { children: ReactNode }) {
             <img src={logo} alt="" width={30} height={30} className="rounded-xl border border-border/40" />
           </div>
           <span className="font-display text-lg font-semibold tracking-tight">
-            Stud <span className="text-gradient-brand">AI</span>
+            Lumin<span className="text-gradient-brand">osity</span>
           </span>
         </div>
 
@@ -313,7 +313,7 @@ export function AppShell({ children }: { children: ReactNode }) {
             className="mb-2 flex items-center gap-2 rounded-lg px-3 py-2 text-xs font-medium text-muted-foreground transition-colors hover:bg-sidebar-accent/60 hover:text-foreground"
           >
             <Info className="h-3.5 w-3.5" />
-            About Stud AI
+            About Luminosity
           </Link>
           {loading ? null : user ? (
             <div className="flex items-center gap-2 rounded-xl border border-border/60 bg-card/60 p-2 shadow-sm">
@@ -372,7 +372,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           <div className="flex items-center gap-2">
             <img src={logo} alt="" width={22} height={22} className="rounded" />
             <span className="font-display text-base font-semibold">
-              Stud <span className="text-gradient-brand">AI</span>
+              Lumin<span className="text-gradient-brand">osity</span>
             </span>
           </div>
           <div className="w-9" />

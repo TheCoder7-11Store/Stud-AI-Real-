@@ -11,8 +11,8 @@ import logo from "@/assets/logo.png";
 export const Route = createFileRoute("/profile")({
   head: () => ({
     meta: [
-      { title: "Your profile — Stud AI" },
-      { name: "description", content: "Manage your Stud AI account, view stats, and sign out." },
+      { title: "Your profile — Luminosity" },
+      { name: "description", content: "Manage your Luminosity account, view stats, and sign out." },
       { name: "robots", content: "noindex" },
     ],
   }),
@@ -81,7 +81,7 @@ function ProfilePage() {
           <Link to="/" className="flex items-center gap-2">
             <img src={logo} alt="" width={22} height={22} className="rounded" />
             <span className="font-display text-base font-semibold">
-              Stud <span className="text-gradient-brand">AI</span>
+              Lumin<span className="text-gradient-brand">osity</span>
             </span>
           </Link>
         </div>

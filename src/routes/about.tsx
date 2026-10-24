@@ -18,17 +18,17 @@ import logo from "@/assets/logo.png";
 export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
-      { title: "About Stud AI — Your personal exam tutor" },
+      { title: "About Luminosity — Your personal exam tutor" },
       {
         name: "description",
         content:
-          "Stud AI helps middle and high schoolers learn concepts, revise smarter, and prep for SAT, IELTS, and TOEFL with a friendly AI tutor.",
+          "Luminosity helps middle and high schoolers learn concepts, revise smarter, and prep for SAT, IELTS, and TOEFL with a friendly AI tutor.",
       },
-      { property: "og:title", content: "About Stud AI" },
+      { property: "og:title", content: "About Luminosity" },
       {
         property: "og:description",
         content:
-          "Learn how Stud AI helps students master concepts and ace exams with personalized, step-by-step tutoring.",
+          "Learn how Luminosity helps students master concepts and ace exams with personalized, step-by-step tutoring.",
       },
     ],
   }),
@@ -54,7 +54,7 @@ const features = [
   {
     icon: Target,
     title: "Personalized guidance",
-    body: "Stud AI adapts to how you learn — nudging you with hints instead of just handing over answers.",
+    body: "Luminosity adapts to how you learn — nudging you with hints instead of just handing over answers.",
   },
   {
     icon: Sparkles,
@@ -95,7 +95,7 @@ function AboutPage() {
         <Link to="/" className="flex items-center gap-2.5">
           <img src={logo} alt="" width={32} height={32} className="rounded-lg" />
           <span className="font-display text-lg font-semibold tracking-tight">
-            Stud <span className="text-gradient-brand">AI</span>
+            Lumin<span className="text-gradient-brand">osity</span>
           </span>
         </Link>
         <Link
@@ -117,7 +117,7 @@ function AboutPage() {
             Helping students <span className="text-gradient-brand">learn</span> and love it.
           </h1>
           <p className="mx-auto mt-5 max-w-2xl text-base text-muted-foreground sm:text-lg">
-            Stud AI is a friendly AI tutor built for middle and high schoolers — and for anyone
+            Luminosity is a friendly AI tutor built for middle and high schoolers — and for anyone
             prepping for the SAT, IELTS, or TOEFL. It explains concepts in plain language, quizzes
             you at just the right level, and helps you revise so exam day feels more confident.
           </p>
@@ -154,7 +154,7 @@ function AboutPage() {
 
         <section className="mt-20 rounded-3xl border border-border/60 bg-card/60 p-8 shadow-sm backdrop-blur sm:p-12">
           <h2 className="font-display text-2xl font-semibold tracking-tight sm:text-3xl">
-            Why we built Stud AI
+            Why we built Luminosity
           </h2>
           <div className="mt-4 space-y-4 text-sm leading-relaxed text-muted-foreground sm:text-base">
             <p>
@@ -163,7 +163,7 @@ function AboutPage() {
               have a patient, encouraging guide available any time they need one.
             </p>
             <p>
-              Stud AI focuses on <em>understanding</em>, not shortcuts. It walks you through
+              Luminosity focuses on <em>understanding</em>, not shortcuts. It walks you through
               problems, asks questions back, and helps you build the intuition that makes exams
               feel manageable. Ask anything, revise anything, and grow more confident with every
               chat.
@@ -199,7 +199,7 @@ function AboutPage() {
               to="/start"
               className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-brand to-accent-warm px-6 py-2.5 text-sm font-medium text-brand-foreground shadow-md transition hover:brightness-110"
             >
-              Open Stud AI
+              Open Luminosity
             </Link>
             <Link
               to="/auth"

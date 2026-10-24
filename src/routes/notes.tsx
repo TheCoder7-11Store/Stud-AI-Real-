@@ -6,7 +6,7 @@ import logo from "@/assets/logo.png";
 export const Route = createFileRoute("/notes")({
   head: () => ({
     meta: [
-      { title: "Pinned notes — Stud AI" },
+      { title: "Pinned notes — Luminosity" },
       { name: "description", content: "Save and revisit your most important study notes from any chat." },
       { name: "robots", content: "noindex" },
     ],
@@ -32,7 +32,7 @@ function NotesPage() {
           <Link to="/" className="flex items-center gap-2">
             <img src={logo} alt="" width={22} height={22} className="rounded" />
             <span className="font-display text-base font-semibold">
-              Stud <span className="text-gradient-brand">AI</span>
+              Lumin<span className="text-gradient-brand">osity</span>
             </span>
           </Link>
         </div>

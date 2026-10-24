@@ -104,7 +104,7 @@ export function ChatWindow({
   };
 
   const handleAddLink = () => {
-    const url = window.prompt("Paste a link (article, video, notes, etc.) — Stud AI will use it as context:");
+    const url = window.prompt("Paste a link (article, video, notes, etc.) — Luminosity will use it as context:");
     if (!url) return;
     try {
       const u = new URL(url.startsWith("http") ? url : `https://${url}`);
@@ -118,7 +118,7 @@ export function ChatWindow({
     // Always confirm first — the user asked to be prompted before camera access.
     if (!cameraGrantedRef.current) {
       const ok = window.confirm(
-        "Stud AI would like to access your camera to capture a photo of your notes or a question. Allow?",
+        "Luminosity would like to access your camera to capture a photo of your notes or a question. Allow?",
       );
       if (!ok) return;
       cameraGrantedRef.current = true;
@@ -180,7 +180,7 @@ export function ChatWindow({
                     <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-gradient-to-br from-brand to-accent-warm text-[10px] font-bold text-brand-foreground shadow-sm">
                       S
                     </span>
-                    Stud AI
+                    Luminosity
                   </div>
                 )}
                 <MessageContent
@@ -322,7 +322,7 @@ export function ChatWindow({
             onChange={handleCameraFile}
           />
           <p className="mt-2 text-center text-[11px] text-muted-foreground">
-            Stud AI can make mistakes. Double-check anything important.
+            Luminosity can make mistakes. Double-check anything important.
           </p>
         </div>
       </div>
