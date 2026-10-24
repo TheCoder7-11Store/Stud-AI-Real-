@@ -8,3 +8,5 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+- Derive the SSR wrapper's fetch signature from the installed TanStack server entry and forward its request options unchanged, so framework upgrades cannot leave a stale runtime interface.
