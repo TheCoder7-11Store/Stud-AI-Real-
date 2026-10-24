@@ -28,6 +28,7 @@ import {
 } from "@/components/ai-elements/prompt-input";
 import { Shimmer } from "@/components/ai-elements/shimmer";
 import { EmptyState } from "@/components/empty-state";
+import { StudyBuddy } from "@/components/study-buddy";
 
 export type ChatWindowProps = {
   threadId: string;
@@ -166,8 +167,14 @@ export function ChatWindow({
     "Quiz me on quadratic equations 💡",
   ];
 
+  const lastAssistant = [...messages].reverse().find((m) => m.role === "assistant");
+  const lastAssistantText = lastAssistant?.parts
+    .map((p) => (p.type === "text" ? p.text : ""))
+    .join(" ");
+
   return (
     <div className="flex h-full min-h-0 flex-col">
+      <StudyBuddy status={status} lastAssistantText={lastAssistantText} />
       <Conversation className="flex-1">
         <ConversationContent className="mx-auto w-full max-w-3xl space-y-6 px-3 py-6 sm:px-4">
           {isEmpty ? (
