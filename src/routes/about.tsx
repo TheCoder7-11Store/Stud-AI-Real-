@@ -95,7 +95,7 @@ function AboutPage() {
         <Link to="/" className="flex items-center gap-2.5">
           <img src={logo} alt="" width={32} height={32} className="rounded-lg" />
           <span className="font-display text-lg font-semibold tracking-tight">
-            Stud <span className="text-gradient-brand">AI</span>
+            Lumin<span className="text-gradient-brand">osity</span>
           </span>
         </Link>
         <Link
