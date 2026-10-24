@@ -11,8 +11,8 @@ import logo from "@/assets/logo.png";
 export const Route = createFileRoute("/profile")({
   head: () => ({
     meta: [
-      { title: "Your profile — Stud AI" },
-      { name: "description", content: "Manage your Stud AI account, view stats, and sign out." },
+      { title: "Your profile — Luminosity" },
+      { name: "description", content: "Manage your Luminosity account, view stats, and sign out." },
       { name: "robots", content: "noindex" },
     ],
   }),

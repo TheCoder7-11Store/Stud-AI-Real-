@@ -6,7 +6,7 @@ import logo from "@/assets/logo.png";
 export const Route = createFileRoute("/notes")({
   head: () => ({
     meta: [
-      { title: "Pinned notes — Stud AI" },
+      { title: "Pinned notes — Luminosity" },
       { name: "description", content: "Save and revisit your most important study notes from any chat." },
       { name: "robots", content: "noindex" },
     ],

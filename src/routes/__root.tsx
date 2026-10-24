@@ -80,13 +80,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Stud AI — Your personal exam tutor" },
+      { title: "Luminosity — Your personal exam tutor" },
       {
         name: "description",
         content:
-          "Stud AI helps middle and high schoolers master concepts and ace exams like the SAT, IELTS, and TOEFL with personalized revision and step-by-step explanations.",
+          "Luminosity helps middle and high schoolers master concepts and ace exams like the SAT, IELTS, and TOEFL with personalized revision and step-by-step explanations.",
       },
-      { property: "og:title", content: "Stud AI — Your personal exam tutor" },
+      { property: "og:title", content: "Luminosity — Your personal exam tutor" },
       {
         property: "og:description",
         content:

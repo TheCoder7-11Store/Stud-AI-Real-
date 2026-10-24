@@ -6,7 +6,7 @@ import logo from "@/assets/logo.png";
 export const Route = createFileRoute("/progress")({
   head: () => ({
     meta: [
-      { title: "Progress — Stud AI" },
+      { title: "Progress — Luminosity" },
       { name: "description", content: "Track what you've studied and where you're improving." },
       { name: "robots", content: "noindex" },
     ],

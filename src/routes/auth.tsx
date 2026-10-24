@@ -12,8 +12,8 @@ import logo from "@/assets/logo.png";
 export const Route = createFileRoute("/auth")({
   head: () => ({
     meta: [
-      { title: "Sign in — Stud AI" },
-      { name: "description", content: "Sign in or create a Stud AI account to sync your study chats across devices." },
+      { title: "Sign in — Luminosity" },
+      { name: "description", content: "Sign in or create a Luminosity account to sync your study chats across devices." },
     ],
   }),
   component: AuthPage,
@@ -95,7 +95,7 @@ function AuthPage() {
       <div className="w-full max-w-sm">
         <Link to="/" className="mb-8 flex items-center justify-center gap-3">
           <img src={logo} alt="" width={40} height={40} className="rounded-lg" />
-          <span className="text-xl font-semibold tracking-tight">Stud AI</span>
+          <span className="text-xl font-semibold tracking-tight">Luminosity</span>
         </Link>
         <div className="rounded-2xl border bg-card p-6 shadow-sm">
           <h1 className="text-lg font-semibold">

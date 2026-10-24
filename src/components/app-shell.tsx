@@ -313,7 +313,7 @@ export function AppShell({ children }: { children: ReactNode }) {
             className="mb-2 flex items-center gap-2 rounded-lg px-3 py-2 text-xs font-medium text-muted-foreground transition-colors hover:bg-sidebar-accent/60 hover:text-foreground"
           >
             <Info className="h-3.5 w-3.5" />
-            About Stud AI
+            About Luminosity
           </Link>
           {loading ? null : user ? (
             <div className="flex items-center gap-2 rounded-xl border border-border/60 bg-card/60 p-2 shadow-sm">

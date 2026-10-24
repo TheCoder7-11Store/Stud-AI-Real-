@@ -6,7 +6,7 @@ import logo from "@/assets/logo.png";
 export const Route = createFileRoute("/flashcards")({
   head: () => ({
     meta: [
-      { title: "Flashcards — Stud AI" },
+      { title: "Flashcards — Luminosity" },
       { name: "description", content: "Turn any topic into flashcards for quick revision." },
       { name: "robots", content: "noindex" },
     ],
@@ -45,7 +45,7 @@ function FlashcardsPage() {
             Flashcards
           </h1>
           <p className="mx-auto mt-3 max-w-md text-sm text-muted-foreground sm:text-base">
-            Ask Stud AI to make flashcards on any topic, then flip through them to lock in definitions, formulas, and facts.
+            Ask Luminosity to make flashcards on any topic, then flip through them to lock in definitions, formulas, and facts.
           </p>
           <div className="mt-8 inline-flex items-center gap-2 rounded-full border border-border/60 bg-card/60 px-4 py-2 text-xs text-muted-foreground">
             <Sparkles className="h-3.5 w-3.5 text-accent-warm" />
