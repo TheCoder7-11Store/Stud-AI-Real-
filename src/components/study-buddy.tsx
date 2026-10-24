@@ -11,10 +11,9 @@ const CHEERS = [
 ];
 
 const SPOTS = [
-  { right: 24, bottom: 140 },
-  { right: 120, bottom: 200 },
-  { right: 40, bottom: 300 },
-  { right: 200, bottom: 150 },
+  { right: 12, bottom: 130 },
+  { right: 12, bottom: 260 },
+  { right: 12, bottom: 380 },
 ];
 
 function summarize(text: string) {
@@ -82,6 +81,7 @@ export function StudyBuddy({
       <style>{`
         @keyframes lumi-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
         @keyframes lumi-blink{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.1)}}
+        @keyframes lumi-wave{0%,100%{transform:rotate(0)}50%{transform:rotate(-15deg)}}
         @keyframes lumi-talk{0%,100%{ry:1.5}50%{ry:4}}
       `}</style>
       {say && (
@@ -98,7 +98,7 @@ export function StudyBuddy({
       )}
       <button
         className="pointer-events-auto block"
-        style={{ animation: "lumi-float 3s ease-in-out infinite" }}
+        style={{ animation: "lumi-float 4s ease-in-out infinite" }}
         onClick={() => {
           setSay(CHEERS[Math.floor(Math.random() * CHEERS.length)]);
           setTalking(true);
@@ -108,30 +108,23 @@ export function StudyBuddy({
         aria-label="Lumi, your study buddy (double-click to hide)"
         title="Click to chat · double-click to hide"
       >
-        <svg width="72" height="80" viewBox="0 0 72 80" fill="none" strokeLinecap="round" strokeLinejoin="round">
-          <line x1="36" y1="12" x2="36" y2="4" stroke="var(--brand)" strokeWidth="2.5" />
-          <circle cx="36" cy="4" r="3" fill="var(--accent-warm)" />
-          <path
-            d="M10 44c0-18 11-32 26-32s26 14 26 32-11 28-26 28S10 62 10 44z"
-            fill="var(--card)"
-            stroke="var(--brand)"
-            strokeWidth="2.5"
-          />
-          <g style={{ transformOrigin: "36px 40px", animation: "lumi-blink 4s infinite" }}>
-            <circle cx="27" cy="40" r="3" fill="var(--brand)" />
-            <circle cx="45" cy="40" r="3" fill="var(--brand)" />
+        <svg width="80" height="130" viewBox="0 0 80 130" fill="none" strokeLinecap="round" strokeLinejoin="round" stroke="var(--brand)" strokeWidth="2.5">
+          <path d="M22 26q2-16 18-16t18 16q-8-6-18-6t-18 6z" fill="var(--brand)" />
+          <circle cx="40" cy="30" r="16" fill="var(--card)" />
+          <g style={{ transformOrigin: "40px 30px", animation: "lumi-blink 4s infinite" }} stroke="none" fill="var(--brand)">
+            <circle cx="34" cy="29" r="2" />
+            <circle cx="46" cy="29" r="2" />
           </g>
-          <circle cx="20" cy="50" r="3" fill="var(--accent-warm)" opacity=".4" />
-          <circle cx="52" cy="50" r="3" fill="var(--accent-warm)" opacity=".4" />
           {talking ? (
-            <ellipse
-              cx="36" cy="53" rx="4" ry="3" fill="var(--brand)"
-              style={{ animation: "lumi-talk .3s infinite" }}
-            />
+            <ellipse cx="40" cy="38" rx="3" ry="2" fill="var(--brand)" stroke="none" style={{ animation: "lumi-talk .3s infinite" }} />
           ) : (
-            <path d="M30 52q6 5 12 0" stroke="var(--brand)" strokeWidth="2.5" />
+            <path d="M35 37q5 4 10 0" />
           )}
-          <path d="M8 46q-6 4-4 10M64 46q6 4 4 10" stroke="var(--brand)" strokeWidth="2.5" />
+          <path d="M40 46v4" />
+          <path d="M24 92V62q0-12 16-12t16 12v30z" fill="var(--accent-warm)" fillOpacity=".25" />
+          <path d="M24 62q-10 10-6 24" />
+          <path d="M56 62q12 -4 14 -18" style={{ transformOrigin: "56px 62px", animation: talking ? "lumi-wave .6s ease-in-out infinite" : undefined }} />
+          <path d="M33 92v28M47 92v28M33 120h-6M47 120h6" />
         </svg>
       </button>
     </div>
