@@ -10,3 +10,4 @@
 <!-- LOVABLE:END -->
 
 - Derive the SSR wrapper's fetch signature from the installed TanStack server entry and forward its request options unchanged, so framework upgrades cannot leave a stale runtime interface.
+- Render Lumi from the reference-derived transparent image asset, keeping movement and speech in the study-buddy component so the approved illustration stays faithful.
