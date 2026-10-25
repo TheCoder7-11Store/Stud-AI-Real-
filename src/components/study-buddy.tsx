@@ -109,8 +109,8 @@ export function StudyBuddy({
         title="Click to chat · double-click to hide"
       >
         <svg
-          width="164"
-          height="174"
+          width="176"
+          height="186"
           viewBox="0 0 160 170"
           fill="none"
           strokeLinecap="round"
@@ -121,32 +121,31 @@ export function StudyBuddy({
           {/* neck */}
           <path d="M66 60h20v20H66z" fill="var(--card)" />
           <path d="M66 60v18M86 60v18" />
+          {/* raised arm, index finger pointing up — behind the shirt so the shoulder joins cleanly */}
+          <g style={{ transformOrigin: "112px 100px", animation: talking ? "lumi-wave .6s ease-in-out infinite" : undefined }}>
+            <path d="M108 104c18-8 24-36 22-60" stroke="var(--brand)" strokeWidth="17" />
+            <path d="M108 104c18-8 24-36 22-60" stroke="var(--card)" strokeWidth="12" />
+            <path d="M130 30V14" stroke="var(--brand)" strokeWidth="12" />
+            <path d="M130 30V14" stroke="var(--card)" strokeWidth="7" />
+            <circle cx="130" cy="38" r="9" fill="var(--card)" />
+          </g>
           {/* stocky torso, cropped at the waist */}
-          <path d="M30 166V104q0-26 30-28h32q30 2 30 28v62z" fill="var(--accent-warm)" fillOpacity=".9" />
+          <path d="M30 166V104q0-26 30-28h32q30 2 30 28v62z" style={{ fill: "color-mix(in oklab, var(--accent-warm) 82%, var(--card))" }} />
           <path d="M62 77q14 11 28-1" />
-          <path d="M28 166h104" strokeWidth="3" />
+          <path d="M30 166h94" strokeWidth="3" />
           {/* arm relaxed across the chest */}
           <path d="M42 98c-14 14 2 32 24 30" stroke="var(--brand)" strokeWidth="17" />
           <path d="M42 98c-14 14 2 32 24 30" stroke="var(--card)" strokeWidth="12" />
           <ellipse cx="74" cy="127" rx="9" ry="7" fill="var(--card)" transform="rotate(-8 74 127)" />
           <path d="M81 122q8 0 10 4M82 129q7 2 8 6" strokeWidth="2.2" />
-          {/* raised arm, index finger pointing up */}
-          <g style={{ transformOrigin: "114px 94px", animation: talking ? "lumi-wave .6s ease-in-out infinite" : undefined }}>
-            <path d="M114 94c16-6 20-28 16-50" stroke="var(--brand)" strokeWidth="17" />
-            <path d="M114 94c16-6 20-28 16-50" stroke="var(--card)" strokeWidth="12" />
-            <path d="M130 30V14" stroke="var(--brand)" strokeWidth="12" />
-            <path d="M130 30V14" stroke="var(--card)" strokeWidth="7" />
-            <circle cx="130" cy="38" r="9" fill="var(--card)" />
-          </g>
           {/* head, tipped slightly upward */}
           <g transform="rotate(-5 76 46)">
             <ellipse cx="76" cy="46" rx="28" ry="27" fill="var(--card)" />
-            <path d="M102 40q11 5 1 14" />
+            <path d="M101 45q11 5 1 14" />
             <path
-              d="M49 44C48 18 104 12 105 38c-9-12-23-16-33-13-12 3-19 9-23 19z"
+              d="M43 53q-3-8 5-11C52 20 80 10 100 23c6 4 7 10 5 15-8-13-23-18-33-15-12 3-21 10-25 20q-2 5-4 10z"
               style={{ fill: "color-mix(in oklab, var(--foreground) 78%, var(--brand))" }}
             />
-            <circle cx="47" cy="45" r="6" style={{ fill: "color-mix(in oklab, var(--foreground) 78%, var(--brand))" }} />
             <g style={{ transformOrigin: "76px 44px", animation: "lumi-blink 4s infinite" }} stroke="none" fill="var(--brand)">
               <circle cx="66" cy="44" r="2.8" />
               <circle cx="84" cy="43" r="2.8" />
