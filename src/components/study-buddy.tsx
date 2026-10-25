@@ -12,12 +12,6 @@ const CHEERS = [
   "Want a quick quiz? Just ask!",
 ];
 
-const SPOTS = [
-  { right: 10, bottom: 110 },
-  { right: 10, bottom: 240 },
-  { right: 10, bottom: 370 },
-];
-
 function summarize(text: string) {
   const clean = text
     .replace(/\$\$[\s\S]*?\$\$|\$[^$]*\$/g, "")
@@ -35,16 +29,10 @@ export function StudyBuddy({
   status: string;
   lastAssistantText?: string;
 }) {
-  const [spot, setSpot] = useState(0);
-  const [say, setSay] = useState<string | null>("Hi! I'm Lumi ✨ Click me anytime!");
+  const [say, setSay] = useState<string | null>("Hello! 👋 Hi, I'm Lumi!");
   const [hidden, setHidden] = useState(false);
   const [talking, setTalking] = useState(false);
   const lastRef = useRef<string | undefined>(undefined);
-
-  useEffect(() => {
-    const t = setInterval(() => setSpot((s) => (s + 1) % SPOTS.length), 9000);
-    return () => clearInterval(t);
-  }, []);
 
   useEffect(() => {
     if (status === "submitted" || status === "streaming") {
@@ -74,20 +62,16 @@ export function StudyBuddy({
     );
   }
 
-  const pos = SPOTS[spot];
   return (
     <div
-      className="lumi-character pointer-events-none fixed z-40 hidden transition-all duration-[2500ms] ease-in-out sm:block"
-      style={{ right: pos.right, bottom: pos.bottom }}
+      className="pointer-events-none fixed bottom-24 right-0 z-40 hidden translate-x-[28%] sm:block"
     >
       <style>{`
-        @keyframes lumi-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
-        
-        
-        @media (prefers-reduced-motion: reduce){.lumi-character{animation:none !important;transition:none !important}}
+        @keyframes lumi-wave{0%,100%{transform:rotate(0)}25%{transform:rotate(-7deg)}75%{transform:rotate(7deg)}}
+        @media (prefers-reduced-motion: reduce){.lumi-character{animation:none !important}}
       `}</style>
       {say && (
-        <div className="pointer-events-auto absolute bottom-full right-0 mb-2 w-72 rounded-2xl rounded-br-sm border border-border bg-card/95 px-3.5 py-2.5 text-sm leading-relaxed text-foreground shadow-lg backdrop-blur">
+        <div className="pointer-events-auto absolute bottom-1/2 right-[72%] mb-2 w-64 rounded-2xl rounded-br-sm border border-border bg-card/95 px-3.5 py-2.5 text-sm leading-relaxed text-foreground shadow-lg backdrop-blur">
           {say}
           <Button variant="ghost"
             onClick={() => setSay(null)}
@@ -99,12 +83,11 @@ export function StudyBuddy({
         </div>
       )}
       <Button variant="ghost"
-        className="lumi-character pointer-events-auto block h-auto w-[220px] rounded-none p-0 hover:bg-transparent motion-reduce:animate-none"
-        style={{ animation: "lumi-float 4s ease-in-out infinite" }}
+        className="lumi-character pointer-events-auto block h-auto w-[230px] rounded-none p-0 hover:bg-transparent motion-reduce:animate-none"
+        style={talking ? { animation: "lumi-wave 1s ease-in-out 2" } : undefined}
         onClick={() => {
           setSay(CHEERS[Math.floor(Math.random() * CHEERS.length)]);
           setTalking(true);
-          setSpot((s) => (s + 1) % SPOTS.length);
         }}
         onDoubleClick={() => setHidden(true)}
         aria-label="Lumi, your study buddy (double-click to hide)"
