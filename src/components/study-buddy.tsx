@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { X } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import lumiCharacter from "@/assets/lumi-reference.png";
 
 const CHEERS = [
   "You've got this! 💪",
@@ -63,41 +65,41 @@ export function StudyBuddy({
 
   if (hidden) {
     return (
-      <button
+      <Button variant="ghost"
         onClick={() => setHidden(false)}
         className="fixed bottom-28 right-4 z-40 rounded-full border border-border bg-card px-3 py-1.5 text-xs text-foreground shadow-md"
       >
         Bring Lumi back ✨
-      </button>
+      </Button>
     );
   }
 
   const pos = SPOTS[spot];
   return (
     <div
-      className="pointer-events-none fixed z-40 hidden transition-all duration-[2500ms] ease-in-out sm:block"
+      className="lumi-character pointer-events-none fixed z-40 hidden transition-all duration-[2500ms] ease-in-out sm:block"
       style={{ right: pos.right, bottom: pos.bottom }}
     >
       <style>{`
         @keyframes lumi-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
-        @keyframes lumi-blink{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.1)}}
-        @keyframes lumi-wave{0%,100%{transform:rotate(0)}50%{transform:rotate(-15deg)}}
-        @keyframes lumi-talk{0%,100%{ry:1.5}50%{ry:4}}
+        
+        
+        @media (prefers-reduced-motion: reduce){.lumi-character{animation:none !important;transition:none !important}}
       `}</style>
       {say && (
         <div className="pointer-events-auto absolute bottom-full right-0 mb-2 w-72 rounded-2xl rounded-br-sm border border-border bg-card/95 px-3.5 py-2.5 text-sm leading-relaxed text-foreground shadow-lg backdrop-blur">
           {say}
-          <button
+          <Button variant="ghost"
             onClick={() => setSay(null)}
             className="absolute -right-2 -top-2 rounded-full border border-border bg-background p-0.5 text-muted-foreground"
             aria-label="Close bubble"
           >
             <X className="size-3" />
-          </button>
+          </Button>
         </div>
       )}
-      <button
-        className="pointer-events-auto block"
+      <Button variant="ghost"
+        className="lumi-character pointer-events-auto block h-auto w-[220px] rounded-none p-0 hover:bg-transparent motion-reduce:animate-none"
         style={{ animation: "lumi-float 4s ease-in-out infinite" }}
         onClick={() => {
           setSay(CHEERS[Math.floor(Math.random() * CHEERS.length)]);
@@ -108,58 +110,15 @@ export function StudyBuddy({
         aria-label="Lumi, your study buddy (double-click to hide)"
         title="Click to chat · double-click to hide"
       >
-        <svg
-          width="176"
-          height="186"
-          viewBox="0 0 160 170"
-          fill="none"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          stroke="var(--brand)"
-          strokeWidth="2.6"
-        >
-          {/* neck */}
-          <path d="M66 60h20v20H66z" fill="var(--card)" />
-          <path d="M66 60v18M86 60v18" />
-          {/* raised arm, index finger pointing up — behind the shirt so the shoulder joins cleanly */}
-          <g style={{ transformOrigin: "112px 100px", animation: talking ? "lumi-wave .6s ease-in-out infinite" : undefined }}>
-            <path d="M108 104c18-8 24-36 22-60" stroke="var(--brand)" strokeWidth="17" />
-            <path d="M108 104c18-8 24-36 22-60" stroke="var(--card)" strokeWidth="12" />
-            <path d="M130 30V14" stroke="var(--brand)" strokeWidth="12" />
-            <path d="M130 30V14" stroke="var(--card)" strokeWidth="7" />
-            <circle cx="130" cy="38" r="9" fill="var(--card)" />
-          </g>
-          {/* stocky torso, cropped at the waist */}
-          <path d="M30 166V104q0-26 30-28h32q30 2 30 28v62z" style={{ fill: "color-mix(in oklab, var(--accent-warm) 82%, var(--card))" }} />
-          <path d="M62 77q14 11 28-1" />
-          <path d="M30 166h94" strokeWidth="3" />
-          {/* arm relaxed across the chest */}
-          <path d="M42 98c-14 14 2 32 24 30" stroke="var(--brand)" strokeWidth="17" />
-          <path d="M42 98c-14 14 2 32 24 30" stroke="var(--card)" strokeWidth="12" />
-          <ellipse cx="74" cy="127" rx="9" ry="7" fill="var(--card)" transform="rotate(-8 74 127)" />
-          <path d="M81 122q8 0 10 4M82 129q7 2 8 6" strokeWidth="2.2" />
-          {/* head, tipped slightly upward */}
-          <g transform="rotate(-5 76 46)">
-            <ellipse cx="76" cy="46" rx="28" ry="27" fill="var(--card)" />
-            <path d="M101 45q11 5 1 14" />
-            <path
-              d="M43 53q-3-8 5-11C52 20 80 10 100 23c6 4 7 10 5 15-8-13-23-18-33-15-12 3-21 10-25 20q-2 5-4 10z"
-              style={{ fill: "color-mix(in oklab, var(--foreground) 78%, var(--brand))" }}
-            />
-            <g style={{ transformOrigin: "76px 44px", animation: "lumi-blink 4s infinite" }} stroke="none" fill="var(--brand)">
-              <circle cx="66" cy="44" r="2.8" />
-              <circle cx="84" cy="43" r="2.8" />
-            </g>
-            <path d="M59 35q7-5 14-2M77 33q7-4 14 0" strokeWidth="2.2" />
-            <path d="M74 48q7 7-2 9" strokeWidth="2.2" />
-            {talking ? (
-              <ellipse cx="75" cy="61" rx="4" ry="3" fill="var(--brand)" stroke="none" style={{ animation: "lumi-talk .3s infinite" }} />
-            ) : (
-              <path d="M62 60q12 10 26-2" />
-            )}
-          </g>
-        </svg>
-      </button>
+        <img
+          src={lumiCharacter}
+          alt="Lumi, a smiling person pointing upward"
+          width={805}
+          height={846}
+          className="block h-auto w-full select-none"
+          draggable={false}
+        />
+      </Button>
     </div>
   );
 }
