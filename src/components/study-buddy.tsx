@@ -64,7 +64,7 @@ export function StudyBuddy({
 
   return (
     <div
-      className="pointer-events-none fixed bottom-24 right-0 z-40 hidden translate-x-[28%] sm:block"
+      className="pointer-events-none fixed right-0 top-1/2 z-40 hidden -translate-y-1/2 translate-x-[48%] sm:block"
     >
       <style>{`
         @keyframes lumi-wave{0%,100%{transform:rotate(0)}25%{transform:rotate(-7deg)}75%{transform:rotate(7deg)}}
