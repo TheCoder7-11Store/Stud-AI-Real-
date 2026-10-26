@@ -64,7 +64,7 @@ export function StudyBuddy({
 
   return (
     <div
-      className="pointer-events-none fixed right-0 top-1/2 z-40 hidden -translate-y-1/2 translate-x-[32%] sm:block"
+      className="pointer-events-none fixed bottom-[244px] right-0 z-40 hidden translate-x-[22%] sm:block"
     >
       <style>{`
         @keyframes lumi-wave{0%,100%{transform:rotate(0)}25%{transform:rotate(-7deg)}75%{transform:rotate(7deg)}}
@@ -83,7 +83,7 @@ export function StudyBuddy({
         </div>
       )}
       <Button variant="ghost"
-        className="lumi-character pointer-events-auto block h-auto w-[300px] rounded-none p-0 hover:bg-transparent motion-reduce:animate-none"
+        className="lumi-character pointer-events-auto block h-auto w-[300px] rounded-none p-0 origin-bottom-right -rotate-[24deg] hover:bg-transparent motion-reduce:animate-none"
         style={talking ? { animation: "lumi-wave 1s ease-in-out 2" } : undefined}
         onClick={() => {
           setSay(CHEERS[Math.floor(Math.random() * CHEERS.length)]);
@@ -98,7 +98,7 @@ export function StudyBuddy({
           alt="Lumi, a smiling person pointing upward"
           width={805}
           height={846}
-          className="block h-auto w-full -rotate-[45deg] select-none"
+          className="block h-auto w-full -scale-x-100 select-none"
           draggable={false}
         />
       </Button>
