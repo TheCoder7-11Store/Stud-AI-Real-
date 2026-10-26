@@ -64,7 +64,7 @@ export function StudyBuddy({
 
   return (
     <div
-      className="pointer-events-none fixed bottom-0 right-0 z-40 hidden translate-x-[34%] translate-y-[8%] sm:block"
+      className="pointer-events-none fixed bottom-[92px] right-0 z-40 hidden translate-x-[22%] sm:block"
     >
       <style>{`
         @keyframes lumi-wave{0%,100%{transform:rotate(0)}25%{transform:rotate(-7deg)}75%{transform:rotate(7deg)}}
@@ -98,7 +98,7 @@ export function StudyBuddy({
           alt="Lumi, a smiling person pointing upward"
           width={805}
           height={846}
-          className="block h-auto w-full -scale-x-100 -rotate-[28deg] origin-[68%_78%] select-none"
+          className="block h-auto w-full -scale-x-100 -rotate-[22deg] origin-[80%_88%] select-none"
           draggable={false}
         />
       </Button>
