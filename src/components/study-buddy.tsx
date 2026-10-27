@@ -33,7 +33,8 @@ export function toSpeech(text: string) {
 }
 
 function summarize(text: string) {
-  const first = toSpeech(text).replace(/^\.\s*/, "").split(/(?<=[.!?])\s/)[0] ?? "";
+  const parts = toSpeech(text).split(/\s*\.\s+|(?<=[!?])\s/).map((x) => x.trim());
+  const first = parts.find((x) => x.length > 25) ?? parts[0] ?? "";
   return first.length > 120 ? first.slice(0, 117) + "…" : first;
 }
 
