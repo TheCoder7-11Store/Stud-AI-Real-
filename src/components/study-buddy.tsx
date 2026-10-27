@@ -55,43 +55,65 @@ export function StudyBuddy({
   const lastRef = useRef<string | undefined>(undefined);
   const spokenRef = useRef<string>("");
   const prevStatus = useRef(status);
-  const canSpeak = typeof window !== "undefined" && "speechSynthesis" in window;
+  const canSpeak = true;
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const abortRef = useRef<AbortController | null>(null);
+  const cacheRef = useRef<{ text: string; url: string } | null>(null);
 
   useEffect(() => {
     setVoiceOn(localStorage.getItem(VOICE_KEY) === "on");
     lastRef.current = lastAssistantText;
     return () => {
-      if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+      abortRef.current?.abort();
+      audioRef.current?.pause();
+      if (cacheRef.current) URL.revokeObjectURL(cacheRef.current.url);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const stopSpeech = () => {
-    if (canSpeak) window.speechSynthesis.cancel();
+    abortRef.current?.abort();
+    audioRef.current?.pause();
     setMouth(false);
     setMode((m) => (m === "speaking" ? "idle" : m));
   };
 
-  const speak = (text: string) => {
-    if (!canSpeak || !text) return;
-    window.speechSynthesis.cancel();
-    const u = new SpeechSynthesisUtterance(text);
-    const voices = window.speechSynthesis.getVoices();
-    const v =
-      voices.find((x) => /en/i.test(x.lang) && /natural|neural|google|samantha|aria/i.test(x.name)) ??
-      voices.find((x) => /^en/i.test(x.lang));
-    if (v) u.voice = v;
-    u.rate = 1;
-    u.onstart = () => setMode("speaking");
-    u.onboundary = () => {
-      setMouth(true);
-      setTimeout(() => setMouth(false), 160);
-    };
-    u.onend = u.onerror = () => {
-      setMouth(false);
+  const speak = async (text: string) => {
+    if (!text) return;
+    stopSpeech();
+    try {
+      let url = cacheRef.current?.text === text ? cacheRef.current.url : null;
+      if (!url) {
+        setSay("Getting my voice ready… 🎙️");
+        const ctrl = new AbortController();
+        abortRef.current = ctrl;
+        const res = await fetch("/api/speech", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ text }),
+          signal: ctrl.signal,
+        });
+        if (!res.ok) throw new Error((await res.text()) || "Voice unavailable");
+        url = URL.createObjectURL(await res.blob());
+        if (cacheRef.current) URL.revokeObjectURL(cacheRef.current.url);
+        cacheRef.current = { text, url };
+        setSay(summarize(lastAssistantText ?? "") || "Here you go! 🎉");
+      }
+      const audio = audioRef.current ?? new Audio();
+      audioRef.current = audio;
+      audio.src = url;
+      audio.onplay = () => setMode("speaking");
+      audio.onended = audio.onpause = () => setMode((m) => (m === "speaking" ? "idle" : m));
+      await audio.play();
+    } catch (e) {
+      if ((e as Error).name === "AbortError") return;
       setMode("idle");
-    };
-    window.speechSynthesis.speak(u);
+      setSay(
+        (e as Error).name === "NotAllowedError"
+          ? "Tap the replay button to hear me 🔊"
+          : "Sorry, my voice isn't working right now 😕",
+      );
+    }
   };
 
   // React to the chat lifecycle: thinking → writing → speaking → idle.
