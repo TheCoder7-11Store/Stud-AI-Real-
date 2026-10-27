@@ -242,7 +242,8 @@ export function StudyBuddy({
           <div className="absolute -top-4 right-4 z-10">{controls}</div>
           <Button
             variant="ghost"
-            className="pointer-events-auto block h-auto w-[220px] rounded-none p-0 hover:bg-transparent"
+            className="lumi-anim pointer-events-auto block h-auto w-[220px] origin-bottom rounded-none p-0 hover:bg-transparent"
+            style={{ animation: anim[mode] }}
             onClick={() => {
               setSay(CHEERS[Math.floor(Math.random() * CHEERS.length)]);
             }}
@@ -255,8 +256,7 @@ export function StudyBuddy({
               alt="Lumi, a smiling person pointing upward"
               width={805}
               height={846}
-              className="lumi-anim block h-auto w-full origin-bottom -scale-x-100 select-none"
-              style={{ animation: anim[mode] }}
+              className="block h-auto w-full -scale-x-100 select-none"
               draggable={false}
             />
           </Button>
