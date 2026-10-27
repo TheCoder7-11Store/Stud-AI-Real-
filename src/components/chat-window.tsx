@@ -174,7 +174,13 @@ export function ChatWindow({
 
   return (
     <div className="flex h-full min-h-0 flex-col">
-      <StudyBuddy status={status} lastAssistantText={lastAssistantText} />
+      <StudyBuddy
+        status={status}
+        lastAssistantText={lastAssistantText}
+        onExplainMore={() =>
+          sendMessage({ text: "Please give me a longer, more detailed explanation of your last answer." })
+        }
+      />
       <Conversation className="flex-1">
         <ConversationContent className="mx-auto w-full max-w-3xl space-y-6 px-3 py-6 sm:px-4">
           {isEmpty ? (
