@@ -11,9 +11,9 @@ export function decodePCM(pending: Uint8Array, incoming: Uint8Array) {
   return { samples, pending: bytes.slice(usable) };
 }
 
-export async function streamSpeech(endpoint: string, text: string, signal?: AbortSignal): Promise<void> {
+export async function streamSpeech(endpoint: string, text: string, signal?: AbortSignal, options?: { language?: string; context?: AudioContext; onAudio?: () => void }): Promise<void> {
   signal?.throwIfAborted();
-  const context = new AudioContext({ sampleRate: 24000 });
+  const context = options?.context ?? new AudioContext({ sampleRate: 24000 });
   const sources = new Set<AudioBufferSourceNode>();
   let playhead = 0;
   let pending = new Uint8Array(0);
@@ -31,7 +31,7 @@ export async function streamSpeech(endpoint: string, text: string, signal?: Abor
     const response = await fetch(endpoint, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ text }),
+      body: JSON.stringify({ text, language: options?.language, streaming: true }),
       signal: controller.signal,
     });
     if (!response.ok || !response.body) throw new Error(`TTS failed: ${response.status} ${await response.text()}`);
@@ -51,6 +51,7 @@ export async function streamSpeech(endpoint: string, text: string, signal?: Abor
         );
         pending = new Uint8Array(decoded.pending);
         if (!decoded.samples.length) return;
+        if (!samplesPlayed) options?.onAudio?.();
         samplesPlayed += decoded.samples.length;
         const buffer = context.createBuffer(1, decoded.samples.length, 24000);
         buffer.copyToChannel(decoded.samples, 0);
@@ -88,6 +89,6 @@ export async function streamSpeech(endpoint: string, text: string, signal?: Abor
     signal?.removeEventListener("abort", abort);
     controller.abort();
     for (const source of sources) source.stop();
-    await context.close();
+    if (!options?.context) await context.close();
   }
 }
