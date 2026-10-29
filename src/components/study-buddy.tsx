@@ -42,10 +42,16 @@ export function StudyBuddy({
   status,
   lastAssistantText,
   onExplainMore,
+  lessonActivity,
+  lessonCaption,
+  embedded = false,
 }: {
   status: string;
   lastAssistantText?: string;
   onExplainMore?: () => void;
+  lessonActivity?: "idle" | "listening" | "thinking" | "writing" | "speaking";
+  lessonCaption?: string;
+  embedded?: boolean;
 }) {
   const [say, setSay] = useState<string | null>("Hello! 👋 Hi, I'm Lumi!");
   const [hidden, setHidden] = useState(false);
@@ -59,6 +65,12 @@ export function StudyBuddy({
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const abortRef = useRef<AbortController | null>(null);
   const cacheRef = useRef<{ text: string; url: string } | null>(null);
+  useEffect(() => {
+    if (!lessonActivity) return;
+    stopSpeech();
+    setMode(lessonActivity === "listening" ? "thinking" : lessonActivity);
+    if (lessonCaption) setSay(lessonCaption.length > 120 ? lessonCaption.slice(0,117) + "…" : lessonCaption);
+  }, [lessonActivity, lessonCaption]);
 
   useEffect(() => {
     setVoiceOn(localStorage.getItem(VOICE_KEY) === "on");
@@ -156,7 +168,7 @@ export function StudyBuddy({
   };
 
   const busy = mode === "thinking" || mode === "writing";
-  const controls = (
+  const controls = embedded ? null : (
     <div className="pointer-events-auto flex items-center gap-1 rounded-full border border-border bg-card/95 p-1 shadow-md backdrop-blur">
       {canSpeak && (
         <>
@@ -240,7 +252,7 @@ export function StudyBuddy({
       {/* Mobile: compact controls only, so Lumi never covers the chat. */}
       <div className="fixed right-3 top-16 z-40 sm:hidden">{controls}</div>
 
-      <div className="pointer-events-none fixed bottom-[200px] right-2 z-40 hidden lg:block">
+      <div className={embedded ? "pointer-events-none fixed bottom-5 right-3 z-30 hidden xl:block" : "pointer-events-none fixed bottom-[200px] right-2 z-40 hidden lg:block"}>
         <style>{`
           @keyframes lumi-idle{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
           @keyframes lumi-think{0%,100%{transform:rotate(0)}50%{transform:rotate(-4deg) translateY(-4px)}}
@@ -249,7 +261,7 @@ export function StudyBuddy({
           @media (prefers-reduced-motion: reduce){.lumi-anim,.lumi-pos{animation:none !important;transition:none !important}}
         `}</style>
         <div className={`lumi-pos transition-transform duration-700 ease-out ${pose[mode]}`}>
-          {say && (
+          {say && !embedded && (
             <div className="pointer-events-auto absolute bottom-[70%] right-[78%] w-60 rounded-2xl rounded-br-sm border border-border bg-card/95 px-3.5 py-2.5 text-sm leading-relaxed text-foreground shadow-lg backdrop-blur">
               {say}
               <Button
@@ -265,7 +277,7 @@ export function StudyBuddy({
           <div className="absolute -top-4 right-4 z-10">{controls}</div>
           <Button
             variant="ghost"
-            className="lumi-anim pointer-events-auto block h-auto w-[220px] origin-bottom rounded-none p-0 hover:bg-transparent"
+            className={`lumi-anim pointer-events-auto block h-auto ${embedded ? "w-[120px]" : "w-[220px]"} origin-bottom rounded-none p-0 hover:bg-transparent`}
             style={{ animation: anim[mode] }}
             onClick={() => {
               setSay(CHEERS[Math.floor(Math.random() * CHEERS.length)]);
