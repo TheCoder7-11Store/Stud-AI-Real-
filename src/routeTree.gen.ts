@@ -19,6 +19,7 @@ import { Route as ProgressRouteImport } from './routes/progress'
 import { Route as StartRouteImport } from './routes/start'
 import { Route as StudyPlansRouteImport } from './routes/study-plans'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
+import { Route as ApiLessonRouteImport } from './routes/api/lesson'
 import { Route as ApiSpeechRouteImport } from './routes/api/speech'
 import { Route as ChatThreadIdRouteImport } from './routes/chat.$threadId'
 
@@ -72,6 +73,11 @@ const ApiChatRoute = ApiChatRouteImport.update({
   path: '/api/chat',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiLessonRoute = ApiLessonRouteImport.update({
+  id: '/api/lesson',
+  path: '/api/lesson',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiSpeechRoute = ApiSpeechRouteImport.update({
   id: '/api/speech',
   path: '/api/speech',
@@ -94,6 +100,7 @@ export interface FileRoutesByFullPath {
   '/start': typeof StartRoute
   '/study-plans': typeof StudyPlansRoute
   '/api/chat': typeof ApiChatRoute
+  '/api/lesson': typeof ApiLessonRoute
   '/api/speech': typeof ApiSpeechRoute
   '/chat/$threadId': typeof ChatThreadIdRoute
 }
@@ -108,6 +115,7 @@ export interface FileRoutesByTo {
   '/start': typeof StartRoute
   '/study-plans': typeof StudyPlansRoute
   '/api/chat': typeof ApiChatRoute
+  '/api/lesson': typeof ApiLessonRoute
   '/api/speech': typeof ApiSpeechRoute
   '/chat/$threadId': typeof ChatThreadIdRoute
 }
@@ -123,6 +131,7 @@ export interface FileRoutesById {
   '/start': typeof StartRoute
   '/study-plans': typeof StudyPlansRoute
   '/api/chat': typeof ApiChatRoute
+  '/api/lesson': typeof ApiLessonRoute
   '/api/speech': typeof ApiSpeechRoute
   '/chat/$threadId': typeof ChatThreadIdRoute
 }
@@ -139,6 +148,7 @@ export interface FileRouteTypes {
     | '/start'
     | '/study-plans'
     | '/api/chat'
+    | '/api/lesson'
     | '/api/speech'
     | '/chat/$threadId'
   fileRoutesByTo: FileRoutesByTo
@@ -153,6 +163,7 @@ export interface FileRouteTypes {
     | '/start'
     | '/study-plans'
     | '/api/chat'
+    | '/api/lesson'
     | '/api/speech'
     | '/chat/$threadId'
   id:
@@ -167,6 +178,7 @@ export interface FileRouteTypes {
     | '/start'
     | '/study-plans'
     | '/api/chat'
+    | '/api/lesson'
     | '/api/speech'
     | '/chat/$threadId'
   fileRoutesById: FileRoutesById
@@ -182,6 +194,7 @@ export interface RootRouteChildren {
   StartRoute: typeof StartRoute
   StudyPlansRoute: typeof StudyPlansRoute
   ApiChatRoute: typeof ApiChatRoute
+  ApiLessonRoute: typeof ApiLessonRoute
   ApiSpeechRoute: typeof ApiSpeechRoute
   ChatThreadIdRoute: typeof ChatThreadIdRoute
 }
@@ -258,6 +271,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiChatRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/lesson': {
+      id: '/api/lesson'
+      path: '/api/lesson'
+      fullPath: '/api/lesson'
+      preLoaderRoute: typeof ApiLessonRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/speech': {
       id: '/api/speech'
       path: '/api/speech'
@@ -286,6 +306,7 @@ const rootRouteChildren: RootRouteChildren = {
   StartRoute: StartRoute,
   StudyPlansRoute: StudyPlansRoute,
   ApiChatRoute: ApiChatRoute,
+  ApiLessonRoute: ApiLessonRoute,
   ApiSpeechRoute: ApiSpeechRoute,
   ChatThreadIdRoute: ChatThreadIdRoute,
 }

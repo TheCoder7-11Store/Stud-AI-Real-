@@ -29,6 +29,9 @@ import {
 import { Shimmer } from "@/components/ai-elements/shimmer";
 import { EmptyState } from "@/components/empty-state";
 import { StudyBuddy } from "@/components/study-buddy";
+import { Button } from "@/components/ui/button";
+import { LumiLesson, type LessonMode, type LessonActivity } from "@/components/lumi-lesson";
+import { lessonTranscript } from "@/lib/lumi/lesson";
 
 export type ChatWindowProps = {
   threadId: string;
@@ -43,7 +46,7 @@ export function ChatWindow({
   onMessagesChange,
   onFirstUserMessage,
 }: ChatWindowProps) {
-  const { messages, sendMessage, status, stop } = useChat({
+  const { messages, sendMessage, status, stop, setMessages } = useChat({
     id: threadId,
     messages: initialMessages,
     transport: new DefaultChatTransport({ api: "/api/chat" }),
@@ -54,6 +57,9 @@ export function ChatWindow({
   });
 
   const [pendingLinks, setPendingLinks] = useState<string[]>([]);
+  const [lessonMode, setLessonMode] = useState<LessonMode | null>(null);
+  const [lessonActivity, setLessonActivity] = useState<LessonActivity>("idle");
+  const [lessonCaption, setLessonCaption] = useState("");
   const cameraInputRef = useRef<HTMLInputElement | null>(null);
   const cameraGrantedRef = useRef(false);
 
@@ -175,13 +181,33 @@ export function ChatWindow({
   return (
     <div className="flex h-full min-h-0 flex-col">
       <StudyBuddy
-        status={status}
+        status={lessonMode ? "ready" : status}
+        lessonActivity={lessonMode ? lessonActivity : undefined}
+        lessonCaption={lessonMode ? lessonCaption : undefined}
+        embedded={!!lessonMode}
         lastAssistantText={lastAssistantText}
         onExplainMore={() =>
           sendMessage({ text: "Please give me a longer, more detailed explanation of your last answer." })
         }
       />
-      <Conversation className="flex-1">
+      <div className="flex flex-wrap items-center gap-1 border-b border-border/60 px-3 py-2" role="group" aria-label="Learning mode">
+        <Button size="sm" variant={!lessonMode ? "secondary" : "ghost"} onClick={() => setLessonMode(null)}>Chat</Button>
+        <Button size="sm" variant={lessonMode === "visual" ? "secondary" : "ghost"} onClick={() => { stop(); setLessonMode("visual"); }}>Visual lesson</Button>
+        <Button size="sm" variant={lessonMode === "talk" ? "secondary" : "ghost"} onClick={() => { stop(); setLessonMode("talk"); }}>Talk to Lumi</Button>
+      </div>
+      {lessonMode ? <div className="min-h-0 flex-1 overflow-y-auto p-3 sm:p-5">
+        <LumiLesson key={lessonMode} mode={lessonMode}
+          history={messages.filter(m => m.role === "user" || m.role === "assistant").map(m => ({ role: m.role as "user" | "assistant", content: m.parts.filter(p => p.type === "text").map(p => p.text).join("\n") }))}
+          onClose={() => setLessonMode(null)}
+          onActivity={(activity, caption) => { setLessonActivity(activity); if (caption) setLessonCaption(caption); }}
+          onLessonComplete={(question, lesson) => {
+            const next: UIMessage[] = [...messages,
+              { id: crypto.randomUUID(), role: "user", parts: [{ type: "text", text: question }] },
+              { id: crypto.randomUUID(), role: "assistant", parts: [{ type: "text", text: lessonTranscript(lesson) }] },
+            ];
+            setMessages(next); persistRef.current(next);
+          }} />
+      </div> : <Conversation className="flex-1">
         <ConversationContent className="mx-auto w-full max-w-3xl space-y-6 px-3 py-6 sm:px-4">
           {isEmpty ? (
             <EmptyState onPick={(p) => sendMessage({ text: p })} prompts={quickPrompts} />
@@ -253,9 +279,9 @@ export function ChatWindow({
           )}
         </ConversationContent>
         <ConversationScrollButton />
-      </Conversation>
+      </Conversation>}
 
-      <div className="border-t border-border/60 bg-background/70 backdrop-blur-xl">
+      {!lessonMode && <div className="border-t border-border/60 bg-background/70 backdrop-blur-xl">
         <div className="mx-auto w-full max-w-3xl p-3 sm:p-4">
           <PromptInput
             onSubmit={handleSubmit}
@@ -338,7 +364,7 @@ export function ChatWindow({
             Luminosity can make mistakes. Double-check anything important.
           </p>
         </div>
-      </div>
+      </div>}
     </div>
   );
 }

@@ -284,3 +284,18 @@
       radial-gradient(900px 500px at -10% 100%, oklch(0.78 0.15 65 / 0.14), transparent 60%);
   }
 }
+
+/* Lumi's board uses the current theme, with a teal teaching-ink accent. */
+.lumi-board {
+  background: var(--card);
+  background-image: linear-gradient(color-mix(in oklab, var(--chart-2) 8%, transparent) 1px, transparent 1px);
+  background-size: 100% 32px;
+  color: var(--foreground);
+}
+.lumi-board-entry { animation: lumi-reveal 650ms ease-out both; }
+.lumi-board-highlight { border-left: 3px solid var(--chart-2); background: color-mix(in oklab, var(--chart-2) 12%, transparent); padding-left: 12px; }
+.lumi-drawing { animation: lumi-reveal 700ms ease-out both; }
+.lumi-drawing line, .lumi-drawing rect, .lumi-drawing ellipse { stroke-dasharray: 1600; animation: lumi-draw 1400ms ease-out both; }
+@keyframes lumi-reveal { from { opacity: 0; clip-path: inset(0 100% 0 0); } to { opacity: 1; clip-path: inset(0 0 0 0); } }
+@keyframes lumi-draw { from { stroke-dashoffset: 1600; } to { stroke-dashoffset: 0; } }
+@media (prefers-reduced-motion: reduce) { .lumi-board-entry, .lumi-drawing, .lumi-drawing line, .lumi-drawing rect, .lumi-drawing ellipse { animation: none; } }
