@@ -8,6 +8,10 @@ export const Route = createFileRoute("/notes")({
     meta: [
       { title: "Pinned notes — Luminosity" },
       { name: "description", content: "Save and revisit your most important study notes from any chat." },
+      { property: "og:title", content: "Pinned notes — Luminosity" },
+      { property: "og:description", content: "Save and revisit your most important study notes from any chat." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
       { name: "robots", content: "noindex" },
     ],
   }),

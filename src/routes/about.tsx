@@ -25,6 +25,8 @@ export const Route = createFileRoute("/about")({
           "Luminosity helps middle and high schoolers learn concepts, revise smarter, and prep for SAT, IELTS, and TOEFL with a friendly AI tutor.",
       },
       { property: "og:title", content: "About Luminosity" },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
       {
         property: "og:description",
         content:

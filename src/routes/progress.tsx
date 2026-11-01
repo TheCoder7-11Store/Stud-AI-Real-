@@ -8,6 +8,10 @@ export const Route = createFileRoute("/progress")({
     meta: [
       { title: "Progress — Luminosity" },
       { name: "description", content: "Track what you've studied and where you're improving." },
+      { property: "og:title", content: "Progress — Luminosity" },
+      { property: "og:description", content: "Track what you've studied and where you're improving." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
       { name: "robots", content: "noindex" },
     ],
   }),

@@ -11,7 +11,6 @@ import {
 import {
   Message,
   MessageContent,
-  MessageResponse,
 } from "@/components/ai-elements/message";
 import {
   PromptInput,
@@ -32,6 +31,7 @@ import { StudyBuddy } from "@/components/study-buddy";
 import { Button } from "@/components/ui/button";
 import { LumiLesson, type LessonMode, type LessonActivity } from "@/components/lumi-lesson";
 import { lessonTranscript } from "@/lib/lumi/lesson";
+import { LumiAnswerBoard } from "@/components/lumi-answer-board";
 
 export type ChatWindowProps = {
   threadId: string;
@@ -180,7 +180,7 @@ export function ChatWindow({
 
   return (
     <div className="flex h-full min-h-0 flex-col">
-      <StudyBuddy
+      {lessonMode && <StudyBuddy
         status={lessonMode ? "ready" : status}
         lessonActivity={lessonMode ? lessonActivity : undefined}
         lessonCaption={lessonMode ? lessonCaption : undefined}
@@ -189,9 +189,9 @@ export function ChatWindow({
         onExplainMore={() =>
           sendMessage({ text: "Please give me a longer, more detailed explanation of your last answer." })
         }
-      />
+      />}
       <div className="flex flex-wrap items-center gap-1 border-b border-border/60 px-3 py-2" role="group" aria-label="Learning mode">
-        <Button size="sm" variant={!lessonMode ? "secondary" : "ghost"} onClick={() => setLessonMode(null)}>Chat</Button>
+        <Button size="sm" variant={!lessonMode ? "secondary" : "ghost"} onClick={() => setLessonMode(null)}>Lumi’s board</Button>
         <Button size="sm" variant={lessonMode === "visual" ? "secondary" : "ghost"} onClick={() => { stop(); setLessonMode("visual"); }}>Visual lesson</Button>
         <Button size="sm" variant={lessonMode === "talk" ? "secondary" : "ghost"} onClick={() => { stop(); setLessonMode("talk"); }}>Talk to Lumi</Button>
       </div>
@@ -214,14 +214,6 @@ export function ChatWindow({
           ) : (
             messages.map((m) => (
               <Message key={m.id} from={m.role} className="gap-1.5">
-                {m.role === "assistant" && (
-                  <div className="mb-1 flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
-                    <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-gradient-to-br from-brand to-accent-warm text-[10px] font-bold text-brand-foreground shadow-sm">
-                      S
-                    </span>
-                    Luminosity
-                  </div>
-                )}
                 <MessageContent
                   className={
                     m.role === "user"
@@ -232,9 +224,7 @@ export function ChatWindow({
                   {m.parts.map((part, i) => {
                     if (part.type === "text") {
                       return m.role === "assistant" ? (
-                        <MessageResponse key={i} className="chat-prose">
-                          {part.text}
-                        </MessageResponse>
+                        <LumiAnswerBoard key={i} text={part.text} live={m.id === lastAssistant?.id && m.id !== initialMessages[initialMessages.length - 1]?.id} />
                       ) : (
                         <div key={i} className="whitespace-pre-wrap leading-relaxed">
                           {part.text}

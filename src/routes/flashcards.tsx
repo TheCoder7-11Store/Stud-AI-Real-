@@ -8,6 +8,10 @@ export const Route = createFileRoute("/flashcards")({
     meta: [
       { title: "Flashcards — Luminosity" },
       { name: "description", content: "Turn any topic into flashcards for quick revision." },
+      { property: "og:title", content: "Flashcards — Luminosity" },
+      { property: "og:description", content: "Turn any topic into flashcards for quick revision." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
       { name: "robots", content: "noindex" },
     ],
   }),

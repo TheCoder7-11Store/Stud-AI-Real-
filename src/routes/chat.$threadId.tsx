@@ -14,6 +14,14 @@ import {
 import { getThread, saveMessages } from "@/lib/threads.functions";
 
 export const Route = createFileRoute("/chat/$threadId")({
+  head: () => ({ meta: [
+    { title: "Lumi’s study board — Luminosity" },
+    { name: "description", content: "Study summarized notes, worked examples and exam practice with Lumi." },
+    { property: "og:title", content: "Lumi’s study board — Luminosity" },
+    { property: "og:description", content: "Study summarized notes, worked examples and exam practice with Lumi." },
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary_large_image" },
+  ] }),
   component: ChatRoute,
 });
 
