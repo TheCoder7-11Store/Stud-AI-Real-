@@ -24,8 +24,19 @@ export function LumiAnswerBoard({ text, live = false }: { text: string; live?: b
     if (!board) return;
     const measure = () => {
       const b = board.getBoundingClientRect();
-      const p = penRef.current?.getBoundingClientRect();
-      setTip({ x: p ? p.left - b.left : 30, y: p ? p.top - b.top + 14 : 50, width: b.width, height: b.height });
+      const active = penRef.current?.parentElement;
+      let p = penRef.current?.getBoundingClientRect();
+      if (active) {
+        const walker = document.createTreeWalker(active, NodeFilter.SHOW_TEXT);
+        let last: Node | null = null;
+        while (walker.nextNode()) if (walker.currentNode.textContent?.trim()) last = walker.currentNode;
+        if (last?.textContent) {
+          const range = document.createRange();
+          range.setStart(last, last.textContent.length - 1); range.setEnd(last, last.textContent.length);
+          p = range.getBoundingClientRect();
+        }
+      }
+      setTip({ x: p ? p.right - b.left + 4 : 30, y: p ? p.bottom - b.top - 3 : 50, width: b.width, height: b.height });
     };
     measure();
     const observer = new ResizeObserver(measure); observer.observe(board);
@@ -33,7 +44,8 @@ export function LumiAnswerBoard({ text, live = false }: { text: string; live?: b
   }, [written, total]);
   let remaining = written;
   const shoulderX = tip.width - (tip.width < 500 ? 47 : 87);
-  const shoulderY = tip.height - (tip.width < 500 ? 64 : 120);
+  const writerTop = Math.max(65, Math.min(tip.height - (tip.width < 500 ? 110 : 185), tip.y - (tip.width < 500 ? 55 : 100)));
+  const shoulderY = writerTop + (tip.width < 500 ? 55 : 100);
   return <div ref={boardRef} className="lumi-answer-board" aria-label="Lumi’s summarized notes board" aria-busy={writing}>
     <div className="lumi-board-label">Lumi’s notes</div>
     <div className="lumi-written-notes">
@@ -49,7 +61,7 @@ export function LumiAnswerBoard({ text, live = false }: { text: string; live?: b
       })}
       {!total && <div className="font-display text-xl text-muted-foreground">{live ? "Lumi is thinking…" : ""}</div>}
     </div>
-    <img src={lumi} alt="Lumi writing your notes" className={`lumi-board-writer ${writing ? "is-writing" : ""}`} />
+    <img src={lumi} alt="Lumi writing your notes" className={`lumi-board-writer ${writing ? "is-writing" : ""}`} style={writing ? { top: writerTop, bottom: "auto" } : undefined} />
     {writing && <svg className="lumi-writing-arm" viewBox={`0 0 ${tip.width} ${tip.height}`} aria-label="Lumi’s hand writing with a pen">
       <path className="lumi-arm-outline" d={`M ${shoulderX} ${shoulderY} Q ${shoulderX - 30} ${tip.y + 55} ${tip.x + 14} ${tip.y + 8}`} />
       <path className="lumi-arm-sleeve" d={`M ${shoulderX} ${shoulderY} Q ${shoulderX - 30} ${tip.y + 55} ${tip.x + 14} ${tip.y + 8}`} />
