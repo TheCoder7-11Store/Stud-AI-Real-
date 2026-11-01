@@ -299,3 +299,23 @@
 @keyframes lumi-reveal { from { opacity: 0; clip-path: inset(0 100% 0 0); } to { opacity: 1; clip-path: inset(0 0 0 0); } }
 @keyframes lumi-draw { from { stroke-dashoffset: 1600; } to { stroke-dashoffset: 0; } }
 @media (prefers-reduced-motion: reduce) { .lumi-board-entry, .lumi-drawing, .lumi-drawing line, .lumi-drawing rect, .lumi-drawing ellipse { animation: none; } }
+
+.lumi-answer-board { position: relative; min-height: 340px; width: 100%; padding: 24px; border: 2px solid var(--border); border-radius: 8px; background: var(--card); background-image: repeating-linear-gradient(transparent 0 35px, color-mix(in oklab, var(--chart-2) 10%, transparent) 35px 36px); color: var(--foreground); }
+.lumi-board-label { font-family: var(--font-display); font-size: 22px; color: var(--chart-2); margin-bottom: 22px; }
+.lumi-written-notes { padding-right: 160px; padding-bottom: 70px; }
+.lumi-written-point { display: flex; gap: 12px; margin-bottom: 18px; overflow-wrap: anywhere; font-family: "Segoe Print", "Bradley Hand", cursive; font-size: 17px; line-height: 1.8; }
+.lumi-point-mark { color: var(--chart-2); }
+.lumi-pen-anchor { display: inline-block; width: 1px; height: 16px; }
+.lumi-board-writer { position: absolute; width: 160px; height: auto; bottom: 14px; right: 8px; transform: scaleX(-1); }
+.lumi-board-writer.is-writing { animation: lumi-writer-sway 700ms ease-in-out infinite; }
+.lumi-writing-arm { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.lumi-arm-outline { fill: none; stroke: var(--foreground); stroke-width: 18px; stroke-linecap: round; }
+.lumi-arm-sleeve { fill: none; stroke: var(--accent-warm); stroke-width: 14px; stroke-linecap: round; }
+.lumi-hand { fill: var(--card); stroke: var(--foreground); stroke-width: 2px; }
+.lumi-pen { fill: none; stroke: var(--chart-2); stroke-width: 5px; stroke-linecap: round; }
+.lumi-pen-tip { fill: none; stroke: var(--foreground); stroke-width: 2px; }
+.lumi-pen-hand { animation: lumi-pen-scribble 160ms ease-in-out infinite alternate; }
+@keyframes lumi-pen-scribble { from { translate: 0 -2px; } to { translate: 2px 2px; } }
+@keyframes lumi-writer-sway { 50% { transform: scaleX(-1) rotate(1deg); } }
+@media (max-width: 640px) { .lumi-answer-board { padding: 16px; min-height: 280px; } .lumi-written-notes { padding-right: 62px; padding-bottom: 100px; } .lumi-board-writer { width: 90px; } .lumi-written-point { font-size: 15px; gap: 7px; } .lumi-arm-outline { stroke-width: 12px; } .lumi-arm-sleeve { stroke-width: 9px; } }
+@media (prefers-reduced-motion: reduce) { .lumi-board-writer.is-writing, .lumi-pen-hand { animation: none; } }
