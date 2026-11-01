@@ -13,6 +13,10 @@ export const Route = createFileRoute("/profile")({
     meta: [
       { title: "Your profile — Luminosity" },
       { name: "description", content: "Manage your Luminosity account, view stats, and sign out." },
+      { property: "og:title", content: "Your profile — Luminosity" },
+      { property: "og:description", content: "Manage your Luminosity account, view stats, and sign out." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
       { name: "robots", content: "noindex" },
     ],
   }),

@@ -14,6 +14,10 @@ export const Route = createFileRoute("/auth")({
     meta: [
       { title: "Sign in — Luminosity" },
       { name: "description", content: "Sign in or create a Luminosity account to sync your study chats across devices." },
+      { property: "og:title", content: "Sign in — Luminosity" },
+      { property: "og:description", content: "Sign in or create a Luminosity account to sync your study chats across devices." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: AuthPage,

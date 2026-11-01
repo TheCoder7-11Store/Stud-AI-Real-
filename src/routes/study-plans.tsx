@@ -8,6 +8,10 @@ export const Route = createFileRoute("/study-plans")({
     meta: [
       { title: "Study plans — Luminosity" },
       { name: "description", content: "Build personalized revision schedules for your exams." },
+      { property: "og:title", content: "Study plans — Luminosity" },
+      { property: "og:description", content: "Build personalized revision schedules for your exams." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
       { name: "robots", content: "noindex" },
     ],
   }),

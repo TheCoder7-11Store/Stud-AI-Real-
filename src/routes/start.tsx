@@ -6,6 +6,14 @@ import { createLocalThread } from "@/lib/threads-store";
 import { createThread, listThreads } from "@/lib/threads.functions";
 
 export const Route = createFileRoute("/start")({
+  head: () => ({ meta: [
+    { title: "Start learning — Luminosity" },
+    { name: "description", content: "Continue your study conversation with Lumi." },
+    { property: "og:title", content: "Start learning — Luminosity" },
+    { property: "og:description", content: "Continue your study conversation with Lumi." },
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary_large_image" },
+  ] }),
   component: StartChat,
 });
 
