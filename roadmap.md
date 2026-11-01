@@ -1,4 +1,5 @@
 # Lumi upgrades
+- [ ] Replace typed assistant answers with summarized board notes and visible Lumi pen movement; verify a real question.
 - [x] Preserve Lumi and add responsive, purposeful thinking/writing/speaking movement.
 - [x] Stream concise answer notes and offer longer explanations.
 - [x] Add natural speech with consent, mute, replay, stop and cancellation.
